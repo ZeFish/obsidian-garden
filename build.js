@@ -142,12 +142,7 @@ esbuild
         path.join(__dirname, "manifest.json"),
         path.join(dest, "manifest.json"),
       );
-      // Copy tray icons
-      fs.readdirSync(__dirname).forEach((file) => {
-        if (file.startsWith("tray") && file.endsWith(".png")) {
-          fs.copyFileSync(path.join(__dirname, file), path.join(dest, file));
-        }
-      });
+
       console.log(`Deployed to vault: ${dest}`);
     } else {
       console.log(

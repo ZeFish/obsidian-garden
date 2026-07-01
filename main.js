@@ -118,13 +118,6 @@ class StandardPlugin extends obsidian_1.Plugin {
       new DailyNavFeature(this.app, this),
     ];
 
-    if (obsidian_1.Platform.isDesktop) {
-      const {
-        SystemTrayFeature,
-      } = require("./src/features/system-tray/index.js");
-      functionalInstances.push(new SystemTrayFeature(this.app, this));
-    }
-
     this.features.push(...functionalInstances);
 
     // Load functional features in parallel

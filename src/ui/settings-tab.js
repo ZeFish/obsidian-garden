@@ -16,7 +16,6 @@ const {
   SnippetManagerSettingTab,
 } = require("../features/snippet-manager/index.js");
 const { Base64FoldSettingTab } = require("../features/base64-fold/index.js");
-const { SystemTraySettingTab } = require("../features/system-tray/index.js");
 const { MediaManagerSettingTab } = require("../features/vault-audit/index.js");
 const { DailyNavSettingTab } = require("../features/daily-nav/index.js");
 
@@ -100,7 +99,6 @@ class StandardSettingTab extends obsidian_1.PluginSettingTab {
       tab.display();
     };
     render(InterfaceManagerSettingTab);
-    render(SystemTraySettingTab);
     render(Base64FoldSettingTab);
     render(DailyNavSettingTab);
   }  _renderStandardSettings(containerEl) {
