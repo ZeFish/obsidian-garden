@@ -1,0 +1,107 @@
+.stnd-vertical-rhythm {
+  --tag-border-width: 1px;
+  --tag-radius: calc(var(--marge) * 0.25);
+  --tag-padding-x: calc(var(--marge) * 0.25);
+  --tag-padding-y: calc(var(--marge) * 0.25);
+  --table-margin: auto;
+
+  --marge: var(--font-density);
+  --marge-block-calculated: calc(var(--marge) * 1.5);
+
+  line-height: var(--line-height-normal) !important;
+}
+
+/* General sibling `~` (not adjacent `+`): empty divs that Obsidian injects
+   between blocks (e.g. from %% comments / embeds) no longer break the rhythm —
+   every el- block after the first still gets its top gap. Visually identical to
+   `+` in the normal case. */
+.stnd-vertical-rhythm
+  .markdown-reading-view
+  [class^="el-"]
+  ~ [class^="el-"]:not(:has(.cm-hmd-frontmatter)) {
+  line-height: var(--line-height-normal) !important;
+  margin: 0;
+  margin-block-start: 2rlh;
+}
+
+.stnd-vertical-rhythm
+  .markdown-reading-view
+  [class^="el-"]
+  ~ [class^="el-h"]:not(.el-hr):not(:has(.cm-hmd-frontmatter)) {
+  margin-block-start: 3lh;
+}
+
+.stnd-vertical-rhythm .markdown-reading-view br {
+  display: block;
+}
+
+.stnd-vertical-rhythm
+  .markdown-reading-view
+  :is(.HyperMD-codeblock, .HyperMD-quote) {
+  margin-block-start: 0;
+}
+
+.stnd-vertical-rhythm .el-p:has(img) + .el-p:has(img) {
+  margin-block-start: var(--img-grid-gap) !important;
+}
+
+/* hr spacing — must match/beat the general "[el-] + [el-]" rule's specificity */
+.stnd-vertical-rhythm .markdown-reading-view [class^="el-"] + .el-hr,
+.stnd-vertical-rhythm .markdown-preview-view [class^="el-"] + .el-hr,
+.stnd-vertical-rhythm [class^="el-"] + .el-hr {
+  margin-block-start: 4rlh;
+}
+
+.stnd-vertical-rhythm .markdown-reading-view .el-hr + [class^="el-"],
+.stnd-vertical-rhythm .markdown-preview-view .el-hr + [class^="el-"],
+.stnd-vertical-rhythm .el-hr + [class^="el-"] {
+  margin-block-start: 4rlh;
+}
+
+.stnd-vertical-rhythm .markdown-preview-view .mod-frontmatter + [class^="el-"] {
+  margin-block-start: 0;
+}
+
+.stnd-vertical-rhythm .markdown-preview-view [class^="el-"] * {
+  margin-block: 0;
+}
+
+.stnd-vertical-rhythm .markdown-preview-view [class^="el-"] p + p {
+  margin-block-start: 1rlh;
+}
+
+.stnd-vertical-rhythm .markdown-preview-view [class^="el-"] ol > li + li,
+.stnd-vertical-rhythm .markdown-preview-view [class^="el-"] ul > li + li {
+  margin-block-start: 0.5rlh;
+}
+
+.stnd-vertical-rhythm .mod-cm6 .cm-line:not(.HyperMD-list-line) {
+  padding-bottom: 1em;
+}
+
+.stnd-vertical-rhythm .mod-cm6 .HyperMD-list-line.cm-line {
+  padding-top: calc(var(--line-height-normal) * 0.25em);
+  padding-bottom: calc(var(--line-height-normal) * 0.25em);
+}
+
+.markdown-reading-view blockquote,
+.markdown-reading-view pre,
+.markdown-reading-view figure,
+.markdown-reading-view .callout,
+.markdown-reading-view p:has(img) {
+  margin-inline: 1rlh;
+}
+
+.full-width .markdown-reading-view p:has(img) {
+  margin-inline: 1rlh;
+}
+
+@media (max-width: 600px) {
+  .markdown-reading-view blockquote,
+  .markdown-reading-view pre,
+  .markdown-reading-view figure,
+  .markdown-reading-view .callout,
+  .markdown-reading-view p:has(img) {
+    margin-inline: 0 !important;
+  }
+}

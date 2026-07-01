@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "node build.js && obsidian vault=Atelier plugin:reload id=garden",
+    "dev": "pnpm run build && obsidian dev:console",
+    "screenshot": "obsidian dev:screenshot"
+  },
+  "dependencies": {
+    "@stnd/styles": "0.5.0",
+    "@stnd/themes": "0.5.0",
+    "prismjs": "^1.30.0"
+  }
+}

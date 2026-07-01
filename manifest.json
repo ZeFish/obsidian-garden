@@ -1,0 +1,10 @@
+{
+  "id": "garden",
+  "name": "Garden",
+  "version": "0.1.4",
+  "minAppVersion": "1.6.0",
+  "description": "Garden — CSS adapter and design token bridge for Obsidian",
+  "author": "Francis",
+  "authorUrl": "https://github.com/ZeFish",
+  "isDesktopOnly": false
+}

@@ -1,0 +1,853 @@
+body.stnd-color:where(.theme-light, .theme-dark),
+body.is-mobile.stnd-color.theme-light,
+body.is-mobile.stnd-color.theme-dark {
+
+  /* --color-background:						var(--color-background); */
+  --color-base-00: color-mix(
+    in oklch,
+    var(--color-foreground, CanvasText) 0%,
+    var(--color-background, Canvas)
+  );
+  --color-base-05: color-mix(
+    in oklch,
+    var(--color-foreground, CanvasText) 2%,
+    var(--color-background, Canvas)
+  );
+  --color-base-10: color-mix(
+    in oklch,
+    var(--color-foreground, CanvasText) 5%,
+    var(--color-background, Canvas)
+  );
+  --color-base-20: color-mix(
+    in oklch,
+    var(--color-foreground, CanvasText) 20%,
+    var(--color-background, Canvas)
+  );
+  --color-base-25: color-mix(
+    in oklch,
+    var(--color-foreground, CanvasText) 25%,
+    var(--color-background, Canvas)
+  );
+  --color-base-30: color-mix(
+    in oklch,
+    var(--color-foreground, CanvasText) 30%,
+    var(--color-background, Canvas)
+  );
+  --color-base-35: color-mix(
+    in oklch,
+    var(--color-foreground, CanvasText) 35%,
+    var(--color-background, Canvas)
+  );
+  --color-base-40: color-mix(
+    in oklch,
+    var(--color-foreground, CanvasText) 40%,
+    var(--color-background, Canvas)
+  );
+  --color-base-50: color-mix(
+    in oklch,
+    var(--color-foreground, CanvasText) 50%,
+    var(--color-background, Canvas)
+  );
+  --color-base-60: color-mix(
+    in oklch,
+    var(--color-foreground, CanvasText) 60%,
+    var(--color-background, Canvas)
+  );
+  --color-base-70: color-mix(
+    in oklch,
+    var(--color-foreground, CanvasText) 70%,
+    var(--color-background, Canvas)
+  );
+  --color-base-80: color-mix(
+    in oklch,
+    var(--color-foreground, CanvasText) 80%,
+    var(--color-background, Canvas)
+  );
+  --color-base-90: color-mix(
+    in oklch,
+    var(--color-foreground, CanvasText) 90%,
+    var(--color-background, Canvas)
+  );
+  --color-base-100: color-mix(
+    in oklch,
+    var(--color-foreground, CanvasText) 100%,
+    var(--color-background, Canvas)
+  );
+  --background-primary: var(--color-background);
+  --background-primary-alt: var(--color-base-05);
+  --background-secondary: var(--color-base-05);
+  --background-secondary-alt: var(--color-background);
+
+
+  /*--color-accent-default: var(--color-accent);*/
+  --color-accent-default: hsl(var(--accent-h) var(--accent-s) var(--accent-l));
+  --color-interactive: color-mix(in oklch, var(--color-accent) 25%, transparent);
+  --color-interactive-hover: color-mix(
+    in oklch,
+    var(--color-accent) 50%,
+    transparent
+  );
+  --color-interactive-hover-backgound: color-mix(
+    in oklch,
+    var(--color-accent) 15%,
+    transparent
+  );
+  --color-icon: var(--text-muted);
+  --bold-color: var(--color-bold);
+  --italic-color: var(--color-italic);
+  --color-h1: var(--color-foreground);
+  --color-h2: var(--color-foreground);
+  --color-h3: var(--color-foreground);
+  --color-h4: var(--color-foreground);
+  --color-h5: var(--color-foreground);
+  --color-h6: var(--color-foreground);
+  --background-modifier-hover: var(--color-interactive-hover-backgound);
+  --background-modifier-active-hover: var(--background-secondary);
+  --background-modifier-border: var(--background-secondary);
+  --background-modifier-border-hover: var(--color-base-20);
+  --background-modifier-border-focus: var(--color-base-70);
+  --background-modifier-error: var(--color-base-05);
+  --background-modifier-error-hover: var(--color-base-05);
+  --background-modifier-success: var(--color-base-05);
+  --background-modifier-message: var(--color-base-05);
+  --background-modifier-form-field: var(--color-base-05);
+  --border-color: color-mix(
+    in oklch,
+    var(--color-foreground, CanvasText) 10%,
+    var(--color-background, Canvas)
+  );
+  --border-width: 1px;
+  --divider-color: var(--border-color);
+  --divider-width: var(--border-width);
+  --hr-color: var(--border-color);
+  --hr-thickness: var(--border-width);
+  --tab-outline-color: var(--border-color);
+  --tab-outline-width: var(--border-width);
+  --tab-outline-color: var(--border-color);
+  --tab-outline-width: var(--border-width);
+  --tab-text-color-focused-active-current: var(--foreground-color);
+  --prompt-border-color: var(--border-color);
+  --prompt-border-width: var(--border-width);
+  --table-border-color: var(--border-color);
+  --modal-border-color: var(--border-color);
+  --status-bar-border-width: var(--border-width);
+  --status-bar-border-color: var(--border-color);
+  --status-bar-border-width: 0;
+  --blockquote-border-thickness: 2px;
+  --blockquote-border-color: var(--border-color);
+  /*--background-modifier-border: var(--border-color);*/
+  --interactive-normal: var(--color-base-10);
+  --interactive-hover: var(--color-interactive-hover);
+  --interactive-accent: var(--color-interactive);
+  --interactive-accent-hover: var(--color-interactive-hover);
+  /*
+  .mod-settings .vertical-tab-content > .setting-item:nth-child(2) {
+      opacity: 0.5;
+  }
+  .mod-settings
+      .vertical-tab-content
+      > .setting-item:nth-child(2)
+      .clickable-icon[aria-label="Restore default"] {
+      display: none;
+  }
+  .mod-settings
+      .vertical-tab-content
+      > .setting-item:nth-child(2)
+      > .setting-item-control
+      > input[type="color"] {
+      visibility: hidden;
+      width: 300px;
+      text-align: right;
+      padding-top: 1rlh;
+  }
+  .mod-settings
+      .vertical-tab-content
+      > .setting-item:nth-child(2)
+      > .setting-item-control
+      > input[type="color"]::before {
+      visibility: visible;
+      content: "Stnd plugin override the accent color";
+      color: var(--text-error);
+      font-family: var(--font-interface);
+      font-size: var(--font-ui-smaller);
+  }
+  */
+  --text-normal: var(--color-foreground);
+  color: var(--color-foreground);
+  --text-muted: var(--color-base-70);
+  --text-faint: var(--color-base-50);
+  --text-on-accent: var(--color-foreground);
+  --text-on-accent-inverted: var(--color-background);
+  --text-success: var(--color-green);
+  --text-warning: var(--color-red);
+  --text-error: var(--color-red);
+  --text-accent: var(--color-accent);
+  --text-accent-hover: var(--color-foreground);
+  --text-selection: color-mix(
+    in oklch,
+    var(--color-accent) 15%,
+    var(--color-background)
+  );
+  --metadata-label-text-color: var(--color-icon);
+  --link-external-color: var(--color-green);
+  --link-external-color-hover: color-mix(
+    in oklch,
+    var(--color-foreground) 25%,
+    var(--color-background)
+  );
+  --link-color: var(--color-accent);
+  --link-color-hover: color-mix(
+    in oklch,
+    var(--link-color) 25%,
+    var(--color-foreground)
+  );
+  --tag-background: color-mix(in oklch, black 2%, transparent);
+  --tag-border: var(--border-color);
+  --tag-color: var(--text-muted);
+  --icon-color: var(--color-icon);
+  --icon-hex: var(--color-foreground);
+  --icon-opacity-hover: 1;
+  --icon-color-active: var(--color-accent);
+  --icon-color-focused: var(--color-accent);
+  --icon-color-hover: var(--color-accent) !important;
+  --nav-item-color: var(--color-foreground);
+  --nav-item-color-active: var(--color-foreground);
+  --nav-item-color-hover: var(--color-accent);
+  --nav-collapse-icon-color: color-mix(
+    in oklch,
+    var(--text-normal) 25%,
+    transparent
+  );
+  --nav-collapse-icon-color-hover: color-mix(
+    in oklch,
+    var(--text-normal) 100%,
+    transparent
+  );
+  --nav-collapse-icon-color-collapsed: color-mix(
+    in oklch,
+    var(--text-normal) 100%,
+    transparent
+  );
+  --nav-indentation-guide-color: color-mix(
+    in oklch,
+    var(--text-normal) 5%,
+    transparent
+  );
+  --nav-item-background-hover: var(--color-interactive-hover-backgound);
+  --nav-item-background-active: var(--color-interactive-hover-backgound);
+  --nav-item-color-highlighted: var(--color-foreground);
+  --ribbon-background: var(--background-secondary);
+  --ribbon-background-collapsed: var(--background-secondary);
+  --titlebar-background: var(--background-secondary) !important;
+  --titlebar-background-focused: var(--background-secondary) !important;
+  --titlebar-text-color-focused: var(--text-normal) !important;
+  --tab-container-background: var(--background-secondary) !important;
+  --indentation-guide-color: color-mix(
+    in oklch,
+    var(--color-foreground) 12%,
+    transparent
+  );
+  --indentation-guide-color-active: color-mix(
+    in oklch,
+    var(--color-foreground) 3%,
+    transparent
+  );
+  --scrollbar-active-thumb-bg: color-mix(
+    in oklch,
+    var(---color-foreground) 20%,
+    transparent
+  );
+  --scrollbar-bg: color-mix(in oklch, var(--color-foreground) 5%, transparent);
+  --scrollbar-thumb-bg: color-mix(
+    in oklch,
+    var(--color-foreground) 1%,
+    transparent
+  );
+  --swatch-shadow: inset 0 0 0 1px
+    color-mix(in oklch, var(--color-foreground) 1%, transparent);
+  --workspace-background-translucent: color-mix(
+    in oklch,
+    var(--color-foreground) 40%,
+    transparent
+  );
+  --text-highlight-bg: var(--text-selection);
+  --callout-default: var(--color-blue);
+  --callout-content-padding: 0;
+  --callout-content-background: transparent;
+  --callout-bug: var(--color-red);
+  --callout-error: var(--color-red);
+  --callout-example: var(--color-purple);
+  --callout-fail: var(--color-red);
+  --callout-important: var(--color-cyan);
+  --callout-info: var(--color-blue);
+  --callout-question: var(--color-orange);
+  --callout-success: var(--color-green);
+  --callout-summary: var(--color-cyan);
+  --callout-tip: var(--color-cyan);
+  --callout-todo: var(--color-blue);
+  --callout-warning: var(--color-orange);
+  --callout-quote: var(--color-cyan);
+
+  --mobile-sidebar-background: transparent;
+
+  /*
+  Theme specific
+  */
+  --tx1: var(--text-normal) !important;
+  --tx2: var(--text-muted) !important;
+  --tx3: var(--text-faint) !important;
+  --ui1: var(--divider-color) !important;
+  --ui2: var(--divider-color) !important;
+  --ui3: var(--divider-color) !important;
+  --bg1: var(--background-secondary) !important;
+  --bg2: var(--background-secondary) !important;
+  --bg3: var(--interactive-accent) !important;
+  --alternating-color-1: var(--color-yellow);
+  --alternating-color-2: var(--color-red);
+  --alternating-color-3: var(--color-blue);
+  --inline-title-color: var(--text-normal);
+}
+body.stnd-color.theme-light .notice,
+body.stnd-color.theme-light .notice-cta,
+body.stnd-color.theme-dark .notice,
+body.stnd-color.theme-dark .notice-cta {
+  color: var(--text-muted) !important;
+}
+body.stnd-color.theme-light .clickable-icon:hover,
+body.stnd-color.theme-light .nav-buttons-container:hover,
+body.stnd-color.theme-light .sidebar-toggle-button:hover,
+body.stnd-color.theme-light .view-action:hover,
+body.stnd-color.theme-dark .clickable-icon:hover,
+body.stnd-color.theme-dark .nav-buttons-container:hover,
+body.stnd-color.theme-dark .sidebar-toggle-button:hover,
+body.stnd-color.theme-dark .view-action:hover {
+  color: var(--color-accent) !important;
+  --icon-color-hover: var(--color-accent) !important;
+}
+body.stnd-color.theme-light.folder-note-underline-path
+  .has-folder-note.view-header-breadcrumb:hover,
+body.stnd-color.theme-dark.folder-note-underline-path
+  .has-folder-note.view-header-breadcrumb:hover {
+  text-decoration-color: var(--color-accent);
+}
+body.stnd-color.theme-light .side-dock-actions,
+body.stnd-color.theme-dark .side-dock-actions {
+  color: var(--icon-color);
+}
+body.stnd-color.theme-light .nav-folder.is-being-dragged-over,
+body.stnd-color.theme-dark .nav-folder.is-being-dragged-over {
+  background: color-mix(
+    in oklch,
+    var(--color-accent) 5%,
+    transparent
+  ) !important;
+}
+body.stnd-color.theme-light :not(.sidebar-color) .mod-right-split,
+body.stnd-color.theme-dark :not(.sidebar-color) .mod-right-split {
+  /*--background-secondary: unset !important;*/
+}
+body.stnd-color.theme-light .tree-item-self:hover,
+body.stnd-color.theme-dark .tree-item-self:hover {
+  --nav-collapse-icon-color: color-mix(
+    in oklch,
+    var(--color-accent) 75%,
+    transparent
+  );
+}
+
+body.stnd-color .suggestion-item.is-selected {
+  color: var(--color-accent);
+}
+body.stnd-color.theme-light.folder-note-underline
+  .has-folder-note:hover
+  .nav-folder-title-content,
+body.stnd-color.theme-dark.folder-note-underline
+  .has-folder-note:hover
+  .nav-folder-title-content {
+  text-decoration-color: color-mix(
+    in oklch,
+    var(--color-accent) 25%,
+    transparent
+  );
+}
+body.stnd-color.theme-light .markdown-reading-view b,
+body.stnd-color.theme-light .markdown-reading-view strong,
+body.stnd-color.theme-light span.cm-strong,
+body.stnd-color.theme-light .cm-strong,
+body.stnd-color.theme-dark .markdown-reading-view b,
+body.stnd-color.theme-dark .markdown-reading-view strong,
+body.stnd-color.theme-dark span.cm-strong,
+body.stnd-color.theme-dark .cm-strong {
+  color: var(--color-bold);
+}
+body.stnd-color.theme-light .markdown-reading-view em,
+body.stnd-color.theme-light span.cm-em,
+body.stnd-color.theme-light .cm-em,
+body.stnd-color.theme-dark .markdown-reading-view em,
+body.stnd-color.theme-dark span.cm-em,
+body.stnd-color.theme-dark .cm-em {
+  color: var(--color-italic);
+}
+body.stnd-color.theme-light .checkbox-container.is-enabled,
+body.stnd-color.theme-dark .checkbox-container.is-enabled {
+  background-color: var(--color-interactive-hover);
+}
+body.stnd-color.theme-light
+  input[type="checkbox"][data-indeterminate="true"]:not(:checked):after,
+body.stnd-color.theme-dark
+  input[type="checkbox"][data-indeterminate="true"]:not(:checked):after {
+  background-color: var(--text-faint);
+}
+body.stnd-color.theme-light.hider-tabs .workspace:not(.is-left-sidedock-open),
+body.stnd-color.theme-dark.hider-tabs .workspace:not(.is-left-sidedock-open) {
+  --bg1: var(--background-primary) !important;
+  --titlebar-background: var(--background-primary) !important;
+  --titlebar-background-focused: var(--background-primary) !important;
+}
+
+body.stnd-color.theme-light.theme-light,
+body.stnd-color.theme-dark.theme-light {
+  --color-foreground: var(--color-light-foreground, #262626);
+  --color-background: var(--color-light-background, #ffffff);
+  --color-white: var(--color-background);
+  --color-black: var(--color-foreground);
+  --color-accent: var(
+    --accent,
+    var(--color-light-accent, var(--color-accent-default))
+  );
+  --color-bold: var(--color-light-bold, var(--color-bold-default));
+  --color-italic: var(--color-light-italic, var(--color-italic-default));
+  --color-red: var(--color-light-red);
+  --color-orange: var(--color-light-orange);
+  --color-yellow: var(--color-light-yellow);
+  --color-green: var(--color-light-green);
+  --color-cyan: var(--color-light-cyan);
+  --color-blue: var(--color-light-blue);
+  --color-purple: var(--color-light-purple);
+  --color-pink: var(--color-light-pink);
+}
+body.stnd-color.theme-light .markdown-source-view.mod-cm6 hr,
+body.stnd-color.theme-dark .markdown-source-view.mod-cm6 hr {
+  border-width: var(--hr-thickness);
+}
+
+body.stnd-color.theme-dark,
+body.stnd-color.theme-dark.is-mobile {
+  --color-foreground: var(--color-dark-foreground, #d9d9d9);
+  --color-background: var(--color-dark-background, #1a1a1a);
+  --color-red: var(--color-dark-red);
+  --color-orange: var(--color-dark-orange);
+  --color-yellow: var(--color-dark-yellow);
+  --color-green: var(--color-dark-green);
+  --color-cyan: var(--color-dark-cyan);
+  --color-blue: var(--color-dark-blue);
+  --color-purple: var(--color-dark-purple);
+  --color-pink: var(--color-dark-pink);
+  --color-white: var(--color-foreground);
+  --color-black: var(--color-background);
+  --color-accent: var(
+    --accent,
+    var(--color-dark-accent, var(--color-accent-default))
+  );
+  --color-bold: var(--color-dark-bold, var(--color-bold-default));
+  --color-italic: var(--color-dark-italic, var(--color-italic-default));
+  --blockquote-border-color: var(--text-faint);
+  --color-h1: color-mix(
+    in oklch,
+    var(--color-foreground) 85%,
+    var(--color-background)
+  );
+  --color-h2: color-mix(
+    in oklch,
+    var(--color-foreground) 90%,
+    var(--color-background)
+  );
+  --color-h3: color-mix(
+    in oklch,
+    var(--color-foreground) 95%,
+    var(--color-background)
+  );
+  --color-h4: var(--color-foreground);
+  --color-h5: var(--color-foreground);
+  --color-h6: var(--color-foreground);
+  --background-primary: var(--color-base-05);
+  --background-primary-alt: var(--color-base-00);
+  --background-secondary: var(--color-base-00);
+  --background-secondary-alt: var(--color-base-05);
+
+  --nav-item-color: var(--text-muted);
+  --nav-item-color-active: var(--text-muted);
+  --color-icon: var(--text-faint);
+  --metadata-label-text-color: var(--color-icon);
+  --metadata-input-text-color: var(--text-muted);
+  --input-placeholder-color: var(--color-icon);
+}
+body.stnd-color.theme-light pre,
+body.stnd-color.theme-dark pre {
+  color: var(--color-base-70);
+  background-color: var(--background-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: inset 0 0 0.75rlh color-mix(in oklch, black 5%, transparent);
+}
+body.stnd-color.theme-light .markdown-rendered mark,
+body.stnd-color.theme-light .cm-s-obsidian span.cm-highlight,
+body.stnd-color.theme-dark .markdown-rendered mark,
+body.stnd-color.theme-dark .cm-s-obsidian span.cm-highlight {
+  background-color: var(--text-highlight-bg);
+  color: currentColor;
+}
+body.stnd-color.theme-light a.footnote-link,
+body.stnd-color.theme-dark a.footnote-link {
+  color: var(--text-faint);
+}
+body.stnd-color.theme-light .sidebar-toggle-button.mod-right,
+body.stnd-color.theme-dark .sidebar-toggle-button.mod-right {
+  background: none !important;
+}
+body.stnd-color.theme-light .workspace-drawer-inner,
+body.stnd-color.theme-light .workspace-split.mod-root,
+body.stnd-color.theme-light .mod-root .workspace-tabs .workspace-leaf,
+body.stnd-color.theme-dark .workspace-drawer-inner,
+body.stnd-color.theme-dark .workspace-split.mod-root,
+body.stnd-color.theme-dark .mod-root .workspace-tabs .workspace-leaf {
+  background: var(--background-secondary);
+}
+body.stnd-color.theme-light .workspace-leaf-content,
+body.stnd-color.theme-dark .workspace-leaf-content {
+  border-radius: var(--radius-m);
+}
+body.stnd-color.theme-light .notice,
+body.stnd-color.theme-dark .notice {
+  color: color-mix(in oklch, var(--text-normal) 50%, transparent);
+}
+body.stnd-color.theme-light .tooltip,
+body.stnd-color.theme-dark .tooltip {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+body.stnd-color.theme-light .is-translucent:not(.is-fullscreen),
+body.stnd-color.theme-dark .is-translucent:not(.is-fullscreen) {
+  --nav-collapse-icon-color: color-mix(
+    in oklch,
+    var(--color-foreground) 30%,
+    transparent
+  );
+  --nav-collapse-icon-color-collapsed: color-mix(
+    in oklch,
+    var(--color-foreground) 30%,
+    transparent
+  );
+}
+body.stnd-color.theme-light .diff-line.mod-left,
+body.stnd-color.theme-dark .diff-line.mod-left {
+  background-color: color-mix(
+    in oklch,
+    var(--background-modifier-error) 20%,
+    transparent
+  );
+}
+body.stnd-color.theme-light .diff-line.mod-left .diff-changed,
+body.stnd-color.theme-dark .diff-line.mod-left .diff-changed {
+  background-color: color-mix(
+    in oklch,
+    var(--background-modifier-error) 40%,
+    transparent
+  );
+}
+body.stnd-color.theme-light .diff-line.mod-right,
+body.stnd-color.theme-dark .diff-line.mod-right {
+  background-color: color-mix(
+    in oklch,
+    var(--background-modifier-success) 20%,
+    transparent
+  );
+}
+body.stnd-color.theme-light .diff-line.mod-right .diff-changed,
+body.stnd-color.theme-dark .diff-line.mod-right .diff-changed {
+  background-color: color-mix(
+    in oklch,
+    var(--background-modifier-success) 40%,
+    transparent
+  );
+}
+body.stnd-color.theme-light input.document-search-input.mod-no-match,
+body.stnd-color.theme-light input.document-replace-input.mod-no-match,
+body.stnd-color.theme-dark input.document-search-input.mod-no-match,
+body.stnd-color.theme-dark input.document-replace-input.mod-no-match {
+  background-color: color-mix(
+    in oklch,
+    var(--background-modifier-error) 20%,
+    transparent
+  );
+}
+@media (hover: hover) {
+  body.stnd-color.theme-light input.document-search-input.mod-no-match:hover,
+  body.stnd-color.theme-light input.document-replace-input.mod-no-match:hover,
+  body.stnd-color.theme-dark input.document-search-input.mod-no-match:hover,
+  body.stnd-color.theme-dark input.document-replace-input.mod-no-match:hover {
+    background-color: color-mix(
+      in oklch,
+      var(--background-modifier-error) 20%,
+      transparent
+    );
+  }
+  body.stnd-color.theme-light
+    .workspace-tab-header.is-active
+    .workspace-tab-header-inner-close-button:hover,
+  body.stnd-color.theme-dark
+    .workspace-tab-header.is-active
+    .workspace-tab-header-inner-close-button:hover {
+    color: var(--color-accent);
+  }
+}
+@media (hover: hover) {
+  body.stnd-color.theme-light
+    .view-header-title-parent
+    .view-header-breadcrumb:hover,
+  body.stnd-color.theme-dark
+    .view-header-title-parent
+    .view-header-breadcrumb:hover {
+    background-color: var(--color-interactive-hover-backgound);
+    color: var(--color-accent);
+  }
+}
+@media (hover: hover) {
+  body.stnd-color.theme-light input[type="color"]::-webkit-color-swatch:hover,
+  body.stnd-color.theme-dark input[type="color"]::-webkit-color-swatch:hover {
+    box-shadow:
+      inset 0 0 0 1px color-mix(in oklch, var(--color-foreground) 20%, transparent),
+      0 0 0 3px var(--background-modifier-border-hover);
+  }
+}
+body.stnd-color.theme-light .pdf-findbar .mod-not-found,
+body.stnd-color.theme-dark .pdf-findbar .mod-not-found {
+  --background-modifier-form-field: color-mix(
+    in oklch,
+    var(--background-modifier-error) 10%,
+    transparent
+  );
+  --background-modifier-border-focus: color-mix(
+    in oklch,
+    var(--background-modifier-error) 60%,
+    transparent
+  );
+}
+@media (hover: hover) {
+  body.stnd-color.theme-light .metadata-property-warning-icon:hover,
+  body.stnd-color.theme-dark .metadata-property-warning-icon:hover {
+    background-color: color-mix(in oklch, var(--color-orange) 15%, transparent);
+  }
+}
+body.stnd-color.theme-light .file-tree .mod-new.is-selected,
+body.stnd-color.theme-dark .file-tree .mod-new.is-selected {
+  background-color: color-mix(
+    in oklch,
+    var(--background-modifier-success) 20%,
+    transparent
+  );
+}
+body.stnd-color.theme-light .file-tree .mod-deleted.is-selected,
+body.stnd-color.theme-light .file-tree .mod-to-delete.is-selected,
+body.stnd-color.theme-dark .file-tree .mod-deleted.is-selected,
+body.stnd-color.theme-dark .file-tree .mod-to-delete.is-selected {
+  background-color: color-mix(
+    in oklch,
+    var(--background-modifier-error) 20%,
+    transparent
+  );
+}
+body.stnd-color.theme-light .publish-upload-item:before,
+body.stnd-color.theme-dark .publish-upload-item:before {
+  background-color: color-mix(
+    in oklch,
+    var(--background-modifier-success) 20%,
+    transparent
+  );
+}
+body.stnd-color.theme-light .publish-upload-item.mod-failed:before,
+body.stnd-color.theme-dark .publish-upload-item.mod-failed:before {
+  background-color: color-mix(
+    in oklch,
+    var(--background-modifier-error) 20%,
+    transparent
+  );
+}
+body.stnd-color.theme-light
+  .sync-history-list-item-header
+  .sync-history-list-item-avatar,
+body.stnd-color.theme-dark
+  .sync-history-list-item-header
+  .sync-history-list-item-avatar {
+  border: 1px solid color-mix(in oklch, var(--color-foreground) 20%, transparent);
+}
+body.stnd-color.theme-light .canvas-node-placeholder::after,
+body.stnd-color.theme-dark .canvas-node-placeholder::after {
+  background-color: color-mix(in oklch, var(--canvas-color) 10%, transparent);
+}
+body.stnd-color.theme-light .canvas-node.is-themed .canvas-node-container,
+body.stnd-color.theme-dark .canvas-node.is-themed .canvas-node-container {
+  border-color: color-mix(in oklch, var(--canvas-color) 70%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklch, var(--canvas-color) 70%, transparent),
+    var(--shadow-stationary);
+}
+body.stnd-color.theme-light .canvas-node-group .canvas-node-content,
+body.stnd-color.theme-dark .canvas-node-group .canvas-node-content {
+  background-color: color-mix(in oklch, var(--canvas-color) 7%, transparent);
+}
+body.stnd-color.theme-light .canvas-group-label,
+body.stnd-color.theme-dark .canvas-group-label {
+  background-color: color-mix(in oklch, var(--canvas-color) 1%, transparent);
+}
+body.stnd-color.theme-light .canvas-node.is-themed .canvas-node-content,
+body.stnd-color.theme-dark .canvas-node.is-themed .canvas-node-content {
+  background-color: color-mix(in oklch, var(--canvas-color) 70%, transparent);
+}
+body.stnd-color.theme-light
+  .canvas-edges
+  g.is-focused
+  path.canvas-interaction-path,
+body.stnd-color.theme-light
+  .canvas:not(.is-connecting)
+  .canvas-edges
+  g:hover
+  path.canvas-interaction-path,
+body.stnd-color.theme-dark
+  .canvas-edges
+  g.is-focused
+  path.canvas-interaction-path,
+body.stnd-color.theme-dark
+  .canvas:not(.is-connecting)
+  .canvas-edges
+  g:hover
+  path.canvas-interaction-path {
+  stroke: color-mix(in oklch, var(--canvas-color) 10%, transparent);
+}
+
+/* ─── Obsidian --code-* variables (consumed by Templater + CM5 themes) ─── */
+/* Templater's styles.css references these with hardcoded fallbacks.         */
+/* We define them here so they stay in sync with the OKLCH color system.     */
+
+body.stnd-color:where(.theme-light, .theme-dark) {
+  --code-normal: var(--color-base-70);
+  --code-comment: var(--color-base-40);
+  --code-keyword: var(--color-cyan);
+  --code-operator: var(--color-base-50);
+  --code-function: var(--color-yellow);
+  --code-property: var(--color-orange);
+  --code-tag: var(--color-red);
+  --code-string: var(--color-green);
+  --code-value: var(--color-purple);
+  --code-number: var(--color-cyan);
+  --code-builtin: var(--color-yellow);
+  --code-type: var(--color-purple);
+  --code-important: var(--color-red);
+}
+
+/* ─── Codeblock syntax highlighting (read mode + live preview) ──────────── */
+/* Obsidian uses PrismJS in read mode — map .token.* to the color system.   */
+/* The blanket text-muted override is intentionally removed here.            */
+
+.stnd-color .markdown-preview-view code,
+.stnd-color .markdown-reading-view code,
+.stnd-color .HyperMD-codeblock {
+  color: var(--color-base-70);
+}
+
+/* Keywords, control flow */
+.stnd-color .markdown-preview-view .token.keyword,
+.stnd-color .markdown-reading-view .token.keyword,
+.stnd-color .token.keyword,
+.stnd-color .token.module,
+.stnd-color .token.class-name {
+  color: var(--color-red);
+}
+
+/* Strings */
+.stnd-color .token.string,
+.stnd-color .token.attr-value,
+.stnd-color .token.template-string {
+  color: var(--color-green);
+}
+
+/* Numbers, booleans */
+.stnd-color .token.number,
+.stnd-color .token.boolean {
+  color: var(--color-cyan);
+}
+
+/* Functions, tags, builtins */
+.stnd-color .token.function,
+.stnd-color .token.tag,
+.stnd-color .token.builtin {
+  color: var(--color-yellow);
+}
+
+/* Properties, attributes, selectors */
+.stnd-color .token.property,
+.stnd-color .token.attr-name,
+.stnd-color .token.selector {
+  color: var(--color-orange);
+}
+
+/* Punctuation, operators */
+.stnd-color .token.punctuation,
+.stnd-color .token.operator {
+  color: var(--color-base-50);
+}
+
+/* Comments */
+.stnd-color .token.comment,
+.stnd-color .token.prolog,
+.stnd-color .token.doctype,
+.stnd-color .token.cdata {
+  color: var(--color-base-40);
+  font-style: italic;
+}
+
+/* Variables */
+.stnd-color .token.variable,
+.stnd-color .token.parameter {
+  color: var(--color-cyan);
+}
+
+/* Namespace, generics */
+.stnd-color .token.namespace,
+.stnd-color .token.generics {
+  color: var(--color-purple);
+}
+
+/* HTML — tag punctuation stays muted */
+.stnd-color .token.tag > .token.punctuation {
+  color: var(--color-base-50);
+}
+
+/* YAML */
+.stnd-color .language-yaml .token.key {
+  color: var(--color-orange);
+}
+.stnd-color .language-yaml .token.literal {
+  color: var(--color-cyan);
+}
+
+/* Bash / Shell */
+.stnd-color .language-bash .token.function,
+.stnd-color .language-sh .token.function,
+.stnd-color .language-shell .token.function {
+  color: var(--color-yellow);
+}
+.stnd-color .language-bash .token.variable,
+.stnd-color .language-sh .token.variable,
+.stnd-color .language-shell .token.variable {
+  color: var(--color-cyan);
+}
+.stnd-color .language-bash .token.builtin,
+.stnd-color .language-sh .token.builtin,
+.stnd-color .language-shell .token.builtin {
+  color: var(--color-red);
+}
+
+.stnd-color .cm-html-embed th,
+.stnd-color .markdown-rendered th {
+  background: var(--background-secondary) !important;
+}

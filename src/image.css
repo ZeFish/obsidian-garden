@@ -1,0 +1,151 @@
+/* ============================================= */
+/* Image Grid */
+/* Based on https://github.com/kepano/obsidian-minimal/blob/master/src/scss/features/image-grid.scss */
+/* Updated to match v4.0.0 logic while preserving custom aesthetics */
+/* ============================================= */
+
+body.stnd {
+    --img-grid-gap: 0.25rlh;
+    --image-grid-fit: cover;
+}
+
+/* Base image styling (Aesthetics) */
+body.stnd .markdown-preview-section img,
+body.stnd .markdown-source-view img:not(.cm-widgetBuffer) {
+    object-fit: cover;
+    border-radius: var(--radius-m);
+    box-shadow:
+        0.3px 0.5px 0.8px color-mix(in oklab, var(--background-primary) 90%, var(--color-black)),
+        0.5px 0.9px 1.5px -0.2px color-mix(in oklab, var(--background-primary) 80%, var(--color-black)),
+        1px 2px 3.2px -0.4px color-mix(in oklab, var(--background-primary) 80%, var(--color-black));
+}
+
+/* Image Embed Container */
+body.stnd .image-embed.is-loaded {
+    line-height: 0;
+    display: flex;
+    align-items: stretch;
+}
+
+/* Grid Layout Logic (Triggered for 2+ siblings) */
+body.stnd .markdown-preview-section :is(div, p):has(> :is(.image-embed, img) ~ :is(.image-embed, img)):not(.callout-content p) {
+    display: grid;
+    margin-block-start: var(--img-grid-gap);
+    margin-block-end: var(--img-grid-gap);
+    padding: 0 0;
+    grid-column-gap: var(--img-grid-gap);
+    grid-row-gap: 0;
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+}
+
+/* Image behavior inside grid */
+body.stnd .markdown-preview-section :is(div, p):has(> :is(.image-embed, img) ~ :is(.image-embed, img)) :is(img, .internal-embed img) {
+    object-fit: var(--image-grid-fit);
+    align-self: stretch;
+    height: 100%;
+    width: 100%;
+}
+
+/* Artifact Cleanup */
+body.stnd .markdown-preview-section > div:has(img) p:empty,
+body.stnd .markdown-preview-section > div:has(img) :is(img, .image-embed) ~ br {
+    display: none;
+}
+
+/* ============================================= */
+/* Image Zoom */
+/* Based on https://github.com/kepano/obsidian-minimal/blob/master/src/scss/features/image-zoom.scss */
+/* ============================================= */
+
+    body.stnd .view-content
+    .markdown-preview-view
+    div:not(.canvas-node-content)
+    img {
+    max-width: 100%;
+    cursor: zoom-in;
+}
+
+body.stnd .view-content .markdown-preview-view img:active {
+    cursor: zoom-out;
+}
+
+    body.stnd .view-content
+    .markdown-preview-view
+    .markdown-preview-view
+    img[referrerpolicy="no-referrer"]:active {
+    background-color: var(--background-primary);
+    padding: 10px;
+}
+
+    body.stnd .view-content
+    .markdown-preview-view
+    .markdown-preview-view
+    img[referrerpolicy="no-referrer"]:active,
+    body.stnd .view-content
+    .markdown-preview-view
+    .image-embed:not(.canvas-node-content):active {
+    --container-img-width: 100%;
+    --container-img-max-width: 100%;
+    aspect-ratio: unset;
+    cursor: zoom-out;
+    display: block;
+    z-index: 200;
+    position: fixed;
+    max-height: calc(100% + 1px);
+    max-width: 100%;
+    height: calc(100% + 1px);
+    width: 100%;
+    object-fit: contain;
+    margin: -0.5px auto 0 !important;
+    text-align: center;
+    padding: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+    body.stnd .view-content
+    .markdown-preview-view
+    .image-embed:not(.canvas-node-content):active:after {
+    background-color: var(--background-primary);
+    opacity: 0.97;
+    content: " ";
+    height: calc(100% + 1px);
+    width: 100%;
+    position: fixed;
+    left: 0;
+    right: 1px;
+    z-index: 98;
+}
+
+    body.stnd .view-content
+    .markdown-preview-view
+    .image-embed:not(.canvas-node-content):active
+    img {
+    aspect-ratio: unset;
+    top: 0;
+    z-index: 99;
+    padding: 0;
+    margin: 0 auto;
+    width: calc(100% - 20px);
+    max-height: 75vh;
+    object-fit:contain;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    opacity: 1;
+    border-color: transparent;
+    border-radius: var(--radius-s);
+    box-shadow: none;
+}
+
+    body.stnd .view-content
+    .markdown-preview-view
+    .markdown-source-view.mod-cm6
+    .cm-content
+    > [contenteditable="false"]:has(
+        .image-embed:not(.canvas-node-content):active
+    ) {
+    contain: unset !important;
+}

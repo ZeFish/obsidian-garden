@@ -1,0 +1,515 @@
+/* --- Snippet: Better highlights.md --- */
+/* ============================================= */
+/* Better highlights */
+/* ============================================= */
+
+    body.stnd.theme-light.ptm-highlight-current-line
+        .ptm-current-line-highlight.ptm-current-line-highlight-box {
+        background: var(--background-primary);
+        border: 1px solid var(--background-secondary-alt);
+        border-left: 0;
+        border-right: 0;
+    }
+    body.stnd.theme-dark.ptm-highlight-current-line
+        .ptm-current-line-highlight.ptm-current-line-highlight-box {
+        background: var(--background-secondary);
+        mix-blend-mode: overlay;
+        border: 1px solid var(--text-normal);
+        border-left: 0;
+        border-right: 0;
+        opacity: 0.5;
+    }
+
+/* --- Snippet: Blurry Modal.md --- */
+.modal-bg {
+    background-color: color-mix(in srgb, black 25%, transparent);
+    backdrop-filter: blur(2px);
+}
+
+.stnd.is-mobile, .stnd {
+    --background-modifier-cover: transparent;
+    --settings-background: var(--background-primary);
+}
+.stnd.is-mobile .menu {
+    --menu-background: var(--background-primary);
+    --interactive-normal: var(--background-secondary);
+}
+
+/* --- Snippet: Callout.md --- */
+/*──────────Blockquotes──────────*/
+
+    .callout[data-callout="msg"] {
+        --callout-color: var(--color-accent);
+        --callout-icon: lucide-message-circle;
+    }
+    .callout[data-callout="comment"] {
+        --callout-color: var(--color-green);
+        --callout-icon: lucide-tree-pine;
+    }
+    .callout[data-callout="transcript"] {
+        --callout-color: var(--color-blue);
+        --callout-icon: lucide-mic-vocal;
+        margin: calc(var(--marge) * 0.5) 0 !important;
+    }
+
+    .callout,
+    .markdown-preview-view pre,
+    .markdown-preview-view blockquote {
+        background: var(--background-secondary);
+        background-color: color-mix(
+            in oklab,
+            var(--color-base-100) 2.5%,
+            transparent
+        );
+        padding: 1rlh 1rlh;
+        border-radius: var(--radius-m);
+        border: 1px solid var(--background-modifier-border);
+        font-size: var(--font-small);
+        line-height: var(--line-height-tight);
+    }
+
+    .markdown-preview-view blockquote,
+    .markdown-source-view .HyperMD-quote {
+        font-style: italic;
+    }
+
+    .callout {
+        mix-blend-mode: normal;
+        transition: var(--duration-superfast) var(--motion-smooth);
+        padding: 0.25rlh;
+        margin-block: 1rlh;
+
+        /* border-color: rgba(var(--callout-color), var(--callout-border-opacity)); */
+        border-color: color-mix(
+            in oklab,
+            var(--callout-color) 10%,
+            transparent
+        );
+        background-color: color-mix(
+            in oklab,
+            var(--callout-color) 10%,
+            transparent
+        );
+    }
+
+    .callout-icon {
+        margin: -0.12rlh 0rlh 0rlh 0rlh;
+    }
+
+    .callout-title {
+        margin: 0.5rlh 0 0.5rlh 0.75rlh;
+        padding: 0.25rlh 0 0.25rlh 0;
+        color: var(--callout-color);
+        display: flex;
+				align-items: center;
+    }
+
+    .callout-content {
+        padding: 1rlh 1rlh;
+        border-radius: var(--radius-m);
+        background-color: color-mix(
+            in oklab,
+            var(--callout-color) 2.5%,
+            var(--background-primary)
+        );
+        box-shadow: inset 0px 0px 0px 1px
+            color-mix(in oklab, var(--callout-color) 20%, transparent);
+        /* border-radius: calc(var(--radius) * 2); */
+        font-size: var(--font-small);
+        margin-left: 0;
+    }
+
+    .markdown-rendered [class^="el-"] .callout-content ol,
+    .markdown-rendered [class^="el-"] .callout-content ul {
+        padding: 0rlh 0rlh 0rlh 1.5rlh;
+        margin: 0.5rlh 0rlh;
+    }
+    .markdown-rendered [class^="el-"] .callout .callout-content *:first-child {
+        margin-top: 0;
+    }
+    .markdown-rendered [class^="el-"] .callout .callout-content *:last-child {
+        margin-bottom: 0;
+    }
+
+    .callout-content:has(.callout) {
+        padding: 0;
+    }
+    .callout-content .callout {
+        margin: 0.5rlh !important;
+        max-width: unset !important;
+    }
+    .callout-content pre {
+        margin: 0.5rlh -0.5rlh !important;
+        padding: 0.5rlh;
+    }
+
+    .markdown-reading-view .callout[data-callout="caption"] {
+        padding: 0;
+        background: none;
+        background-color: transparent;
+        border: none;
+        margin: -1.5rlh 15% 0rlh 15% !important;
+        box-shadow: none;
+    }
+
+
+    .callout[data-callout="caption"] .callout-title {
+        display: none;
+    }
+
+    .callout[data-callout="caption"] .callout-content {
+        padding: 0.5rlh 1rlh;
+        background: none;
+        border: none;
+        color: red;
+        box-shadow: none;
+        line-height: 1;
+        text-align: center;
+        color: var(--text-muted);
+        font-size: var(--font-small) !important;
+    }
+
+    .callout[data-callout="caption"] .callout-content p:first-child {
+        margin-top: 0;
+    }
+
+/* --- Snippet: Code.md --- */
+.stnd-sourece .markdown-source-view .cm-editor .cm-line { 
+			white-space: pre 
+					!important; overflow-x: auto; 
+			}
+			
+	.stnd-source .view-header, .stnd-source .workspace-tab-header.is-active { 
+		background-color: var(--background-primary) !important;
+}
+
+.stnd-editing:not(.stnd-source) .cm-gutters {display:none !important;}
+
+.stnd-source .markdown-source-view .cm-editor { 
+		--file-line-width: 100%;
+		background-color: var(--background-primary) !important;
+		max-width: 100% !important; 
+}
+.stnd-source .markdown-source-view .cm-line, .stnd-source .markdown-source-view .cm-hmd-frontmatter { 
+		background-color: transparent !important;
+		max-width: 100% !important; 
+}
+
+.markdown-preview-view pre,
+pre code[class*="language-"] {
+    line-height: var(--line-height-normal);
+    font-size: var(--font-smaller);
+}
+
+/* code elements */
+.folder-note-underline .has-folder-note .nav-folder-title-content {
+    text-decoration-line: underline;
+    text-decoration-color: var(--text-faint);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+}
+
+/*.markdown-source-view, .markdown-reading-view {
+	letter-spacing: var(--font-letter-spacing);
+  }*/
+
+.cm-gutterElement {
+    font-family: var(--font-monospace);
+    font-feature-settings: "dlig", "salt", "case", "kern", "tnum" !important;
+}
+
+    .markdown-preview-view:not(.code-copy-button-on)
+    button.copy-code-button {
+    display: none;
+}
+
+/* --- Snippet: External Link no icon.md --- */
+.external-link {
+	background:none;
+	padding-right:0;
+}
+
+/* --- Snippet: Filetree - compact.md --- */
+.nav-file-title,
+.nav-folder-title,
+.idontknowwhyineedtoputthishere {
+		line-height:1em;
+		margin:0 0 0.1rlh 0;
+		overflow:visible;
+}
+
+.tree-item-inner {overflow:visible;}
+
+/* code elements */
+.folder-note-underline .has-folder-note .nav-folder-title-content {
+    text-decoration-line: underline;
+    text-decoration-color: var(--text-faint);
+}
+
+/* --- Snippet: Frontmatter.md --- */
+/*──────────FrontMatter Elements──────────*/
+
+    .markdown-source-view .cm-line:has(.cm-hmd-frontmatter),
+    .cm-hmd-frontmatter {
+        background: var(--background-primary);
+        font-size: var(--font-smaller);
+        line-height: var(--line-height-tight);
+        color: var(--text-muted);
+    }
+
+/* --- Snippet: Generator Suggestion.md --- */
+.suggestion-container .suggestion-item :is(h5, small) {
+    margin: 0;
+}
+.suggestion-container .suggestion-item :not(h5) {
+    color: var(--text-faint);
+}
+.suggestion-container .suggestion-item .path,
+.suggestion-container .suggestion-item :is(small):empty {
+    display: none;
+}
+
+/* --- Snippet: Hide Title.md --- */
+.view-header {background:transparent !important;}
+
+.stnd-source .view-header, 
+.workspace-tab-header-container,
+.mod-root {
+--titlebar-background-focused:transparent !important;
+	background:transparent !important;
+}
+
+.view-header-title-container {opacity:1;}
+.view-header-title-container:hover {opacity:1;}
+
+/* --- Snippet: Img Minimize.md --- */
+/* ============================================= */
+/* Minimize Images in source view */
+/* ============================================= */
+
+.stnd-editing .markdown-source-view img:not(.cm-widgetBuffer) {
+    height: 4rlh !important;
+}
+
+.stnd-editing .markdown-source-view img:not(.cm-widgetBuffer):active {
+    height: inherit;
+}
+
+/* --- Snippet: Link decoration off.md --- */
+/* ============================================= */
+/* Remove link underline decoration */
+/* ============================================= */
+body.stnd.stnd {
+	--link-decoration: none;
+	--link-external-decoration: none;
+}
+
+.markdown-reading-view a {
+	text-decoration: none !important;
+  }
+  
+.markdown-reading-view a:hover {
+	text-decoration: none !important;
+  }
+
+/* --- Snippet: Mobile no header.md --- */
+.is-mobile.chisel-reading .mod-root {
+		padding-top: 0 !important;
+}
+.is-mobile.chisel-reading .view-header {
+		display: block;
+		height:0px;
+}
+.is-mobile.chisel-reading .cm-sizer::before,
+.is-mobile.chisel-reading .markdown-preview-view::before {
+		content: "";
+		display: block;
+		height: var(--safe-area-inset-top);
+}
+.is-mobile.chisel-reading .mobile-navbar {display:none;}
+
+/* --- Snippet: Trim.md --- */
+p {
+  text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
+}
+
+/* --- Snippet: base.md --- */
+.bases-embed {
+        --bases-embed-border-width: 10px !important;
+        --bases-table-font-size: var(--font-size);
+        
+    }
+
+    .bases-tbody,
+    .bases-rendered-value {
+        --bases-table-text-size: calc(
+            var(--font-text-size) * pow(var(--font-ratio), -0.5)
+        );
+        --bases-table-text-size: var(--nav-item-size);
+        --input-padding: 0.5rlh 0.5rlh !important;
+        box-shadow: none;
+        --table-border-color: var(--border-color);
+        --bases-table-header-background: var(--background-secondary);
+    }
+
+    .bases-header,
+    .bases-thead,
+    .bases-tr,
+    .bases-td {
+        box-shadow: none;
+        border: 0;
+        --bases-header-border-width: 0;
+    }
+    .bases-tr:not(:last-child) {
+        border-bottom: 1px solid var(--divider-color);
+    }
+
+    .bases-embed .bases-view {
+        --bases-embed-border-width: 0px;
+        --bases-embed-border-color: var(--border-color);
+        --bases-embed-border-radius: var(--radius);
+    }
+
+    .mod-sidedock .bases-header,
+    .bases-header {
+        opacity: 0;
+    }
+    .mod-sidedock .bases-header:hover,
+    .bases-header:hover,
+    .bases-thead:hover {
+        opacity: 1;
+    }
+    .bases-thead {
+        opacity: 0;
+    }
+    .mod-sidedock .bases-thead {
+        display: none;
+    }
+
+
+/* --- Snippet: highlights.md --- */
+/* ============================================= */
+/* Better highlights */
+/* ============================================= */
+
+    body.stnd.theme-light.ptm-highlight-current-line
+        .ptm-current-line-highlight.ptm-current-line-highlight-box {
+        background: var(--background-primary);
+        border: 1px solid var(--background-secondary-alt);
+        border-left: 0;
+        border-right: 0;
+    }
+    body.stnd.theme-dark.ptm-highlight-current-line
+        .ptm-current-line-highlight.ptm-current-line-highlight-box {
+        background: var(--background-secondary);
+        mix-blend-mode: overlay;
+        border: 1px solid var(--text-normal);
+        border-left: 0;
+        border-right: 0;
+        opacity: 0.5;
+    }
+
+/* --- Snippet: sidenote.md --- */
+/*
+
+	Sidenotes
+
+*/
+
+.markdown-preview-view .el-div .callout[data-callout~="aside"] {
+    position: absolute;
+
+    min-width: 10rlh;
+    max-width: 20rlh;
+
+    padding: 0;
+    border: 0;
+    background: transparent;
+    opacity: 0.6;
+
+    text-align: left;
+    margin: unset;
+    margin-left: calc(var(--file-line-width) + 2rlh);
+}
+
+.callout[data-callout~="aside"] p {
+    margin: 0;
+}
+
+.callout[data-callout~="aside"] .callout-title {
+    display: none;
+}
+
+.callout[data-callout~="aside"] .callout-content {
+    padding: 0;
+    font-size: 0.75rem;
+    box-shadow: none;
+    background: transparent;
+    padding-right: 2rlh;
+}
+.callout[data-callout~="aside"] .callout-content p {
+    line-height: 1.3em;
+}
+
+.callout[data-callout~="aside"] .callout-title .callout-icon {
+    display: none;
+}
+
+/* --- Snippet: transclusion.md --- */
+.markdown-embed
+    .inline-title {
+    display: none !important;
+}
+
+body.stnd.stnd {
+    --embed-padding: 0;
+    --embed-max-height: unset;
+}
+
+    .markdown-preview-view
+    .el-embed-page
+    p {
+    margin-left: 0;
+    margin-right: 0;
+}
+.theme-dark
+    .markdown-preview-view
+    .markdown-embed,
+.theme-light
+    .markdown-preview-view
+    .markdown-embed {
+    background: none;
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+    .markdown-preview-view
+    .markdown-embed-content {
+    padding: 0 !important;
+}
+
+    .markdown-preview-view
+    .markdown-embed-link {
+    display: none;
+}
+
+    .markdown-preview-view
+    .embed-title {
+    display: none;
+}
+
+/* --- Snippet: zoom large screen.md --- */
+/* @link https://utopia.fyi/type/calculator?c=1500,16,1.125,2500,32,1.414,0,0,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+
+@media only screen and (min-width: 1500) {
+    body.stnd.stnd {
+        --file-line-width: max(40em, 35vw) !important;
+        --font-text-size: clamp(1rem, -0.5rem + 1.6vw, 1.3rem) !important;
+        --line-width: max(40em, 35vw) !important;
+        --max-width: 35vw !important;
+        --line-height-normal: clamp(1.5rem, 1rem + 0.8vi, 1.3rem) !important;
+    }
+}
+
