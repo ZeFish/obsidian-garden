@@ -1,9 +1,9 @@
 {
-  "id": "garden",
-  "name": "Garden",
+  "id": "obsidian-standard-garden",
+  "name": "Standard::Garden",
   "version": "0.1.4",
   "minAppVersion": "1.6.0",
-  "description": "Garden — CSS adapter and design token bridge for Obsidian",
+  "description": "The obsidian plugin for managing and publishing your notes on standard.garden",
   "author": "Francis",
   "authorUrl": "https://github.com/ZeFish",
   "isDesktopOnly": false
