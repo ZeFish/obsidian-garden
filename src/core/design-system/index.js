@@ -2,9 +2,9 @@
 
 const obsidian_1 = require("obsidian");
 const { KNOWN_TOKENS, FONT_TOKENS } = require("../../constants");
-// Curated theme token blocks ({ name: "[data-theme=…]{…}" }), bundled into
+// Curated theme token blocks ({ name: "[data-stnd-theme=…]{…}" }), bundled into
 // main.js by build.js. Only the active theme's block is injected at runtime, so
-// the style engine never parses the other ~33 unused [data-theme] blocks.
+// the style engine never parses the other ~33 unused [data-stnd-theme] blocks.
 const THEMES = require("../../themes.generated.js");
 
 // Helper to bundle and load common PrismJS languages since Obsidian bundles a bare-minimum Prism instance
@@ -158,7 +158,7 @@ class DesignSystemFeature {
       clearTimeout(this.frontmatterUpdateTimeout);
     if (this.workspaceReadyTimeout) clearTimeout(this.workspaceReadyTimeout);
     if (this.snapshotSaveTimeout) clearTimeout(this.snapshotSaveTimeout);
-    document.body.removeAttribute("data-theme");
+    document.body.removeAttribute("data-stnd-theme");
     if (this.stndThemeElement) {
       this.stndThemeElement.remove();
     }
@@ -190,7 +190,11 @@ class DesignSystemFeature {
   // Only touches textContent (never moves the element) to avoid style recalc flicker.
   applyThemeCss(theme, snippetCss) {
     if (!this.stndThemeElement) return;
-    const tokenBlock = (theme && THEMES[theme]) || "";
+    let tokenBlock = (theme && THEMES[theme]) || "";
+    // Normalize bundled selectors: [data-theme="..."] → [data-stnd-theme="..."]
+    if (tokenBlock) {
+      tokenBlock = tokenBlock.replace(/\[data-theme="/g, '[data-stnd-theme="');
+    }
     const combined = [tokenBlock, snippetCss].filter(Boolean).join("\n\n");
     if (this.stndThemeElement.textContent !== combined) {
       this.stndThemeElement.textContent = combined;
@@ -345,23 +349,27 @@ class DesignSystemFeature {
     this.appliedClasses = newClasses;
 
     if (this.plugin.settings.enableDesignSystem) {
-      if (activeFile && frontmatter) {
+      if (!activeFile) {
+        // No active file (settings modal, empty workspace) — leave as-is
+      } else if (frontmatter) {
         this.applyFrontmatter(frontmatter);
         await this.applyTheme(frontmatter);
+      } else {
+        // File is active but frontmatter not resolved yet — apply theme with
+        // empty string so curated tokens still load if data-stnd-theme is set
+        await this.applyTheme(null);
       }
-      // When no file is active (e.g. settings modal has focus), leave the
-      // current theme/frontmatter as-is — don't wipe it.
     } else {
       this.clearFrontmatterProperties();
       this.clearThemeSnippet();
-      document.body.removeAttribute("data-theme");
+      document.body.removeAttribute("data-stnd-theme");
       this.applyThemeCss(null, "");
     }
 
     this.saveStartupSnapshot(newClasses, frontmatter);
   }
 
-  // theme: frontmatter → data-theme on body + combined CSS injection.
+  // theme: frontmatter → data-stnd-theme on body + combined CSS injection.
   async applyTheme(frontmatter) {
     const theme =
       frontmatter && frontmatter.theme != null
@@ -369,9 +377,9 @@ class DesignSystemFeature {
         : "";
 
     if (theme) {
-      document.body.setAttribute("data-theme", theme);
+      document.body.setAttribute("data-stnd-theme", theme);
     } else {
-      document.body.removeAttribute("data-theme");
+      document.body.removeAttribute("data-stnd-theme");
     }
 
     if (!theme) {
@@ -383,7 +391,7 @@ class DesignSystemFeature {
     // Zero-latency cache injection
     const rawCachedCss = this.themeCache[theme];
     if (rawCachedCss) {
-      const cachedCss = rawCachedCss.replace(/body\.stnd-color\b/g, `[data-theme="${theme}"]`);
+      const cachedCss = rawCachedCss.replace(/body\.stnd-color\b/g, `[data-stnd-theme="${theme}"]`);
       this.lastAppliedThemeSnippetCss = cachedCss;
       this.applyThemeCss(theme, cachedCss);
     } else {
@@ -412,7 +420,7 @@ class DesignSystemFeature {
       const regex = /```css\b.*?\n([\s\S]*?)```/gi;
       let allCss = [...content.matchAll(regex)].map((m) => m[1]).join("\n");
       // Normalize stale selectors from older vault notes / adapter output
-      allCss = allCss.replace(/body\.stnd-color\b/g, `[data-theme="${theme}"]`);
+      allCss = allCss.replace(/body\.stnd-color\b/g, `[data-stnd-theme="${theme}"]`);
 
       if (allCss !== this.lastAppliedThemeSnippetCss) {
         this.lastAppliedThemeSnippetCss = allCss;
@@ -513,14 +521,14 @@ class DesignSystemFeature {
 
     if (this.plugin.settings.enableDesignSystem) {
       if (snap.theme) {
-        document.body.setAttribute("data-theme", snap.theme);
+        document.body.setAttribute("data-stnd-theme", snap.theme);
       }
       this.createStyleElements();
 
       // Inject the combined theme (curated tokens + cached snippet) into #stnd-theme
       let snippetCss = (snap.theme && this.themeCache[snap.theme]) || "";
       if (snippetCss) {
-        snippetCss = snippetCss.replace(/body\.stnd-color\b/g, `[data-theme="${snap.theme}"]`);
+        snippetCss = snippetCss.replace(/body\.stnd-color\b/g, `[data-stnd-theme="${snap.theme}"]`);
       }
       this.applyThemeCss(snap.theme, snippetCss);
       this.lastAppliedThemeSnippetCss = snippetCss;
