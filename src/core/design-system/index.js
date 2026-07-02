@@ -40,11 +40,10 @@ class DesignSystemFeature {
     this.plugin = plugin;
 
     this.appliedClasses = new Set();
-    this.appliedSnippetViewClasses = new Set(); // view-mode classes (stnd-reading, …)
+    this.appliedSnippetViewClasses = new Set();
     this.hasAppliedStartupSnapshot = false;
     this.stndFrontmatterElement = null;
-    this.stndThemeSnippetElement = null;
-    this.stndThemeTokensElement = null;
+    this.stndThemeElement = null;
     this.lastAppliedCustomCss = "";
     this.lastAppliedThemeSnippetCss = "";
     this.lastAppliedThemePath = "";
@@ -53,28 +52,14 @@ class DesignSystemFeature {
     this.snapshotSaveTimeout = null;
     this.workspaceReadyTimeout = null;
     this.startupRetryCount = 0;
-    this.themeCache = {}; // Local memory cache, persisted to cache-themes.json
+    this.themeCache = {};
   }
 
   async load() {
-    // --- OPTIMIZATION: Load theme cache from file ---
     await this.loadThemeCacheFromFile();
-
-    // Curated-theme tokens get their own <style>. Created first — before
-    // snippet-manager's #stnd-global — so the cascade matches the old layout
-    // (curated tokens < global snippets < frontmatter !important overrides),
-    // where the themes used to live at the top of styles.css.
-    this.ensureThemeTokensElement();
+    this.ensureThemeElement();
 
     // ─── Syntax highlighting post-processor ──────────────────────────────────
-    // Obsidian loads PrismJS (and its grammars) lazily and asynchronously. The
-    // bare `window.Prism` global can be reached before that finishes, so reading
-    // `Prism.languages[lang]` synchronously returns undefined for blocks rendered
-    // early — even for core languages like css — leaving them untokenized (no
-    // .token spans → color.css has nothing to paint). `loadPrism()` resolves only
-    // once Prism is fully initialised, so the grammars exist by the time we
-    // tokenize. We also re-run manually because Obsidian skips its own pass when
-    // another processor (e.g. Templater) has already claimed the block.
     this.plugin.registerMarkdownPostProcessor(async (el) => {
       const codes = el.querySelectorAll(
         'pre > code[class*="language-"]:not(.is-highlighted)',
@@ -89,13 +74,10 @@ class DesignSystemFeature {
       if (!Prism || typeof Prism.highlight !== "function") return;
       loadCommonPrismLanguages(Prism);
       codes.forEach((code) => {
-        // If the code block is already highlighted (has token spans), don't touch it!
         if (code.querySelector(".token")) {
           code.classList.add("is-highlighted");
           return;
         }
-
-        // Extract language from class e.g. "language-json is-loaded" → "json"
         const match = code.className.match(/language-(\S+)/);
         if (!match) return;
         const grammar = Prism.languages[match[1]];
@@ -104,39 +86,27 @@ class DesignSystemFeature {
             code.innerHTML = Prism.highlight(code.textContent, grammar, match[1]);
             code.classList.add("is-highlighted");
           } catch (e) {
-            // Leave the block untouched if Prism throws on its content.
           }
         }
       });
     });
 
-    // Update classes when active note changes
     this.plugin.registerEvent(
       this.app.workspace.on("active-leaf-change", () => {
         this.updateBodyClasses();
         this.updateModeClasses();
       }),
     );
-    // Update classes when frontmatter changes
     this.plugin.registerEvent(
       this.app.metadataCache.on("changed", (file) => {
-        // Run update on any markdown change to ensure theme notes trigger updates
-        // on the notes that use them. applyTheme is optimized to skip injection
-        // if the CSS content hasn't changed.
         clearTimeout(this.frontmatterUpdateTimeout);
         this.frontmatterUpdateTimeout = setTimeout(() => {
           this.updateBodyClasses();
         }, 50);
       }),
     );
-
-    // Also listen for frontmatter resolve events. On a cold start the vault
-    // fires "resolve" once per file as it indexes (hundreds of times); applying
-    // the snapshot stays immediate, but updateBodyClasses is debounced so the
-    // indexing storm collapses into a single pass instead of one per file.
     this.plugin.registerEvent(
       this.app.metadataCache.on("resolve", (file) => {
-        // Try applying startup snapshot if still idle and not yet applied
         if (!this.hasAppliedStartupSnapshot)
           this.applyStartupSnapshotSynchronously();
         clearTimeout(this.frontmatterUpdateTimeout);
@@ -145,20 +115,15 @@ class DesignSystemFeature {
         }, 50);
       }),
     );
-
-    // Update classes when mode changes
     this.plugin.registerEvent(
       this.app.workspace.on("layout-change", () => {
         this.updateModeClasses();
       }),
     );
-
-    // Add more immediate response to editor changes
     this.plugin.registerEvent(
       this.app.workspace.on("editor-change", (editor, info) => {
         const activeFile = this.app.workspace.getActiveFile();
         if (activeFile && info.file === activeFile) {
-          // Debounce the update to avoid excessive calls
           clearTimeout(this.frontmatterUpdateTimeout);
           this.frontmatterUpdateTimeout = setTimeout(() => {
             this.updateBodyClasses();
@@ -166,12 +131,8 @@ class DesignSystemFeature {
         }
       }),
     );
-
-    // Listen for file modifications (immediate response)
     this.plugin.registerEvent(
       this.app.vault.on("modify", (file) => {
-        // Run update on any markdown change to ensure theme notes trigger updates
-        // on the notes that use them.
         clearTimeout(this.frontmatterUpdateTimeout);
         this.frontmatterUpdateTimeout = setTimeout(() => {
           this.updateBodyClasses();
@@ -181,14 +142,11 @@ class DesignSystemFeature {
 
     this.updateModeClasses();
 
-    // Also attempt once the workspace layout is ready
-    // (ensures vault files are available)
     if (this.app?.workspace?.onLayoutReady) {
       this.app.workspace.onLayoutReady(() => {
         this.onWorkspaceReady();
       });
     } else {
-      // Fallback for older Obsidian versions
       this.app.workspace.on("layout-ready", () => {
         this.onWorkspaceReady();
       });
@@ -201,33 +159,53 @@ class DesignSystemFeature {
     if (this.workspaceReadyTimeout) clearTimeout(this.workspaceReadyTimeout);
     if (this.snapshotSaveTimeout) clearTimeout(this.snapshotSaveTimeout);
     document.body.removeAttribute("data-theme");
-    if (this.stndThemeSnippetElement) {
-      this.stndThemeSnippetElement.remove();
-    }
-    if (this.stndThemeTokensElement) {
-      this.stndThemeTokensElement.remove();
+    if (this.stndThemeElement) {
+      this.stndThemeElement.remove();
     }
     this.cleanup();
     this.clearModeClasses();
   }
 
   onWorkspaceReady() {
-    // Re-sync body classes once the workspace (and vault files) are available —
-    // the load call fires too early.
     this.workspaceReadyTimeout = setTimeout(() => {
       this.updateBodyClasses();
       this.applyStartupSnapshotSynchronously();
     }, 50);
   }
 
-  ensureThemeTokensElement() {
-    let el = document.getElementById("stnd-theme-tokens");
+  // Single <style> for the entire theme: curated token block + theme note CSS.
+  // Always re-appended to end of <head> so it sits before #stnd-frontmatter
+  // in the cascade (frontmatter is the per-note escape hatch → last).
+  ensureThemeElement() {
+    let el = document.getElementById("stnd-theme");
     if (!el) {
       el = document.createElement("style");
-      el.id = "stnd-theme-tokens";
+      el.id = "stnd-theme";
       document.head.appendChild(el);
     }
-    this.stndThemeTokensElement = el;
+    this.stndThemeElement = el;
+  }
+
+  // Build the combined CSS: curated token block first, then theme note CSS.
+  applyThemeCss(theme, snippetCss) {
+    if (!this.stndThemeElement) return;
+    const tokenBlock = (theme && THEMES[theme]) || "";
+    const combined = [tokenBlock, snippetCss].filter(Boolean).join("\n\n");
+    if (this.stndThemeElement.textContent !== combined) {
+      this.stndThemeElement.textContent = combined;
+      // Re-append to maintain cascade order (after snippets, before frontmatter)
+      this.appendThemeBeforeFrontmatter();
+    }
+  }
+
+  appendThemeBeforeFrontmatter() {
+    if (!this.stndThemeElement) return;
+    const fm = document.getElementById("stnd-frontmatter");
+    if (fm && fm.parentElement === document.head) {
+      document.head.insertBefore(this.stndThemeElement, fm);
+    } else {
+      document.head.appendChild(this.stndThemeElement);
+    }
   }
 
   async loadThemeCacheFromFile() {
@@ -254,17 +232,6 @@ class DesignSystemFeature {
     }
   }
 
-  // Inject the active curated theme's token block (or clear it). Only one theme
-  // is ever in the DOM; an unknown name (e.g. a vault theme note) injects
-  // nothing here and is handled by the theme-snippet path instead.
-  applyThemeTokens(theme) {
-    if (!this.stndThemeTokensElement) return;
-    const css = (theme && THEMES[theme]) || "";
-    if (this.stndThemeTokensElement.textContent !== css) {
-      this.stndThemeTokensElement.textContent = css;
-    }
-  }
-
   createStyleElements() {
     let element = document.getElementById("stnd-frontmatter");
     if (!element) {
@@ -274,13 +241,7 @@ class DesignSystemFeature {
     }
     this.stndFrontmatterElement = element;
 
-    let themeElement = document.getElementById("stnd-theme-snippet");
-    if (!themeElement) {
-      themeElement = document.createElement("style");
-      themeElement.id = "stnd-theme-snippet";
-      document.head.appendChild(themeElement);
-    }
-    this.stndThemeSnippetElement = themeElement;
+    this.ensureThemeElement();
   }
 
   cleanup() {
@@ -304,30 +265,24 @@ class DesignSystemFeature {
         customCss: this.lastAppliedCustomCss,
       };
       await this.plugin.saveSettings();
-    }, 1000); // Debounce by 1s to avoid excessive writes
+    }, 1000);
   }
 
-  // Called on every leaf-change, editor-change, metadata-change, etc.
   async updateBodyClasses() {
     const activeFile = this.app.workspace.getActiveFile();
 
     const newClasses = new Set();
     let frontmatter = null;
 
-    // 1. Global settings
     if (this.plugin.settings.enableDesignSystem) {
       newClasses.add("stnd-adapter");
     }
 
-    // 2. Per-note frontmatter
     if (activeFile) {
-      // Use Obsidian's metadata cache as the sole source of truth for
-      // frontmatter so body classes stay stable while editing.
       frontmatter =
         this.app.metadataCache.getFileCache(activeFile)?.frontmatter ?? null;
 
       if (frontmatter) {
-        // cssclasses
         const cssclasses = frontmatter.cssclasses || frontmatter.cssClasses;
         if (cssclasses) {
           const list = Array.isArray(cssclasses) ? cssclasses : [cssclasses];
@@ -338,7 +293,6 @@ class DesignSystemFeature {
           });
         }
 
-        // published + visibility — use the configurable publish key (default: "publish")
         const publishKey =
           (this.plugin.settings.keyPrefix || "") +
           this.plugin.settings.publishKey;
@@ -368,17 +322,14 @@ class DesignSystemFeature {
       }
     }
 
-    // 3. Diff and Apply classes
     const bodyClassList = document.body.classList;
 
-    // Remove classes that are no longer present
     this.appliedClasses.forEach((cls) => {
       if (!newClasses.has(cls)) {
         bodyClassList.remove(cls);
       }
     });
 
-    // Add new classes
     newClasses.forEach((cls) => {
       if (!this.appliedClasses.has(cls)) {
         try {
@@ -397,8 +348,6 @@ class DesignSystemFeature {
 
     this.appliedClasses = newClasses;
 
-    // 4. Design-token properties from frontmatter
-    // 5. Theme selection (theme: frontmatter → data-theme on body)
     if (this.plugin.settings.enableDesignSystem) {
       if (activeFile && frontmatter) {
         this.applyFrontmatter(frontmatter);
@@ -410,59 +359,50 @@ class DesignSystemFeature {
       this.clearFrontmatterProperties();
       this.clearThemeSnippet();
       document.body.removeAttribute("data-theme");
-      this.applyThemeTokens(null);
+      this.applyThemeCss(null, "");
     }
 
-    // Save snapshot for next startup
     this.saveStartupSnapshot(newClasses, frontmatter);
   }
 
-  // theme: frontmatter selects a bundled curated theme (data-theme on body).
-  // Also searches for a matching .md file in the vault to inject CSS snippets.
+  // theme: frontmatter → data-theme on body + combined CSS injection.
   async applyTheme(frontmatter) {
     const theme =
       frontmatter && frontmatter.theme != null
         ? String(frontmatter.theme).trim()
         : "";
 
-    // 1. Set the data-theme attribute + inject the curated token block
     if (theme) {
       document.body.setAttribute("data-theme", theme);
     } else {
       document.body.removeAttribute("data-theme");
     }
-    this.applyThemeTokens(theme);
 
-    // 2. Load and inject CSS from the theme note
     if (!theme) {
       this.clearThemeSnippet();
+      this.applyThemeCss(null, "");
       return;
     }
 
-    // --- OPTIMIZATION: Zero-latency cache injection ---
-    // If we have a cached version of this theme's CSS, apply it synchronously
-    // to prevent the flash of unstyled content while we wait for the vault read.
+    // Zero-latency cache injection
     const cachedCss = this.themeCache[theme];
-    if (cachedCss && this.stndThemeSnippetElement) {
-      this.stndThemeSnippetElement.textContent = cachedCss;
-      document.head.appendChild(this.stndThemeSnippetElement);
+    if (cachedCss) {
       this.lastAppliedThemeSnippetCss = cachedCss;
+      this.applyThemeCss(theme, cachedCss);
     } else {
-      // If not in cache and not the currently applied CSS, clear to avoid
-      // showing the previous theme's snippet on the new theme's attribute.
       if (this.lastAppliedThemeSnippetCss) {
         this.clearThemeSnippet();
       }
+      // Still apply curated tokens immediately (bundled, no I/O)
+      this.applyThemeCss(theme, "");
     }
 
     const themeNote = this.app.metadataCache.getFirstLinkpathDest(theme, "");
     if (!themeNote) {
-      // If we applied from cache but the file is gone, clear it
       if (!cachedCss) this.clearThemeSnippet();
       return;
     }
 
-    // --- OPTIMIZATION: Skip re-read if file is unchanged ---
     if (
       this.lastAppliedThemePath === themeNote.path &&
       this.lastAppliedThemeMtime === themeNote.stat.mtime
@@ -472,30 +412,23 @@ class DesignSystemFeature {
 
     try {
       const content = await this.app.vault.read(themeNote);
-      // Improved regex: handles trailing spaces, optional carriage returns, and multiple blocks
       const regex = /```css\b.*?\n([\s\S]*?)```/gi;
       const allCss = [...content.matchAll(regex)].map((m) => m[1]).join("\n");
 
       if (allCss !== this.lastAppliedThemeSnippetCss) {
-        if (this.stndThemeSnippetElement) {
-          this.stndThemeSnippetElement.textContent = allCss;
-          document.head.appendChild(this.stndThemeSnippetElement);
-        }
         this.lastAppliedThemeSnippetCss = allCss;
         this.lastAppliedThemePath = themeNote.path;
         this.lastAppliedThemeMtime = themeNote.stat.mtime;
 
-        // Update local cache and persist to file (keep data.json lean)
-        this.themeCache[theme] = allCss;
+        this.applyThemeCss(theme, allCss);
 
+        this.themeCache[theme] = allCss;
         const cachedThemes = Object.keys(this.themeCache);
         if (cachedThemes.length > 5) {
           delete this.themeCache[cachedThemes[0]];
         }
-
         await this.saveThemeCacheToFile();
       } else {
-        // If content is same but mtime changed (e.g. non-CSS edit), still update trackers
         this.lastAppliedThemePath = themeNote.path;
         this.lastAppliedThemeMtime = themeNote.stat.mtime;
       }
@@ -504,7 +437,6 @@ class DesignSystemFeature {
         `Standard: Error loading theme note "${themeNote.path}":`,
         e,
       );
-      // Don't clear if we have a cache — it might just be a transient read error
       if (!cachedCss) this.clearThemeSnippet();
     }
   }
@@ -513,9 +445,6 @@ class DesignSystemFeature {
     this.lastAppliedThemeSnippetCss = "";
     this.lastAppliedThemePath = "";
     this.lastAppliedThemeMtime = 0;
-    if (this.stndThemeSnippetElement) {
-      this.stndThemeSnippetElement.textContent = "";
-    }
   }
 
   clearAllClasses() {
@@ -568,7 +497,6 @@ class DesignSystemFeature {
       return;
     }
 
-    // 1. Apply body classes
     if (Array.isArray(snap.cssClasses)) {
       snap.cssClasses.forEach((cls) => {
         if (typeof cls === "string" && cls.trim().length > 0) {
@@ -579,33 +507,25 @@ class DesignSystemFeature {
       });
     }
 
-    // 2. Apply global settings classes
     if (this.plugin.settings.enableDesignSystem) {
       document.body.classList.add("stnd-adapter");
       this.appliedClasses.add("stnd-adapter");
     }
 
-    // 3. Apply active theme + design tokens (only when design system is enabled)
     if (this.plugin.settings.enableDesignSystem) {
       if (snap.theme) {
         document.body.setAttribute("data-theme", snap.theme);
       }
-      this.applyThemeTokens(snap.theme);
-
       this.createStyleElements();
+
+      // Inject the combined theme (curated tokens + cached snippet) into #stnd-theme
+      const snippetCss = (snap.theme && this.themeCache[snap.theme]) || "";
+      this.applyThemeCss(snap.theme, snippetCss);
+      this.lastAppliedThemeSnippetCss = snippetCss;
 
       if (snap.customCss && this.stndFrontmatterElement) {
         this.stndFrontmatterElement.textContent = snap.customCss;
         this.lastAppliedCustomCss = snap.customCss;
-      }
-
-      if (snap.theme && this.themeCache[snap.theme]) {
-        const themeCss = this.themeCache[snap.theme];
-        if (this.stndThemeSnippetElement) {
-          this.stndThemeSnippetElement.textContent = themeCss;
-          document.head.appendChild(this.stndThemeSnippetElement);
-          this.lastAppliedThemeSnippetCss = themeCss;
-        }
       }
     } else {
       this.createStyleElements();
@@ -658,19 +578,13 @@ class DesignSystemFeature {
     }
 
     if (Object.keys(stndProps).length > 0) {
-      // Ensure the element exists
       if (
         !this.stndFrontmatterElement ||
         !document.getElementById("stnd-frontmatter")
       ) {
         this.stndFrontmatterElement = document.createElement("style");
         this.stndFrontmatterElement.id = "stnd-frontmatter";
-        const themeEl = document.getElementById("stnd-theme-snippet");
-        if (themeEl) {
-          document.head.insertBefore(this.stndFrontmatterElement, themeEl);
-        } else {
-          document.head.appendChild(this.stndFrontmatterElement);
-        }
+        document.head.appendChild(this.stndFrontmatterElement);
       }
       let stndFrontmatterElement = this.stndFrontmatterElement;
       const googleFontsImports = Array.from(fontProperties)
@@ -697,7 +611,7 @@ class DesignSystemFeature {
         .join("\n\n");
 
       if (newCssContent === this.lastAppliedCustomCss) {
-        return; // No change, so no DOM update needed
+        return;
       }
 
       stndFrontmatterElement.textContent = newCssContent;
@@ -721,12 +635,6 @@ class DesignSystemFeature {
     );
     if (!leafContentEl) return;
 
-    // `layout-change` fires continuously while scrolling (editor reflow, viewport
-    // changes — see scroll-map). Re-clearing and re-adding the mode classes,
-    // including `stnd-reading` on the `.markdown-preview-view`, forces a full
-    // style recalc of the note subtree on every scroll frame — felt as janky /
-    // "jumping" scroll, worst on mobile. Skip when nothing that affects these
-    // classes has actually changed (same leaf, same mode, same live-preview).
     const dataType = leafContentEl.getAttribute("data-type");
     const dataMode = leafContentEl.getAttribute("data-mode");
     const sourceView = leafContentEl.querySelector(".markdown-source-view");
@@ -759,9 +667,6 @@ class DesignSystemFeature {
           newMode = "editing";
           body.classList.add("stnd-editing");
           this.addClassToViews("stnd-editing");
-          // Raw Source vs Live Preview: Obsidian marks the editor
-          // `.markdown-source-view` with `is-live-preview` only in Live
-          // Preview, so its absence means raw source mode.
           if (sourceView && !isLivePreview) {
             body.classList.add("stnd-source");
             this.addClassToViews("stnd-source");
