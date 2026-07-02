@@ -187,24 +187,13 @@ class DesignSystemFeature {
   }
 
   // Build the combined CSS: curated token block first, then theme note CSS.
+  // Only touches textContent (never moves the element) to avoid style recalc flicker.
   applyThemeCss(theme, snippetCss) {
     if (!this.stndThemeElement) return;
     const tokenBlock = (theme && THEMES[theme]) || "";
     const combined = [tokenBlock, snippetCss].filter(Boolean).join("\n\n");
     if (this.stndThemeElement.textContent !== combined) {
       this.stndThemeElement.textContent = combined;
-      // Re-append to maintain cascade order (after snippets, before frontmatter)
-      this.appendThemeBeforeFrontmatter();
-    }
-  }
-
-  appendThemeBeforeFrontmatter() {
-    if (!this.stndThemeElement) return;
-    const fm = document.getElementById("stnd-frontmatter");
-    if (fm && fm.parentElement === document.head) {
-      document.head.insertBefore(this.stndThemeElement, fm);
-    } else {
-      document.head.appendChild(this.stndThemeElement);
     }
   }
 
@@ -233,15 +222,22 @@ class DesignSystemFeature {
   }
 
   createStyleElements() {
+    // Create both elements in the correct cascade order (theme before frontmatter).
+    // Once created, they are never moved — only their textContent changes.
+    this.ensureThemeElement();
+
     let element = document.getElementById("stnd-frontmatter");
     if (!element) {
       element = document.createElement("style");
       element.id = "stnd-frontmatter";
-      document.head.appendChild(element);
+      // Insert AFTER #stnd-theme so frontmatter always wins the cascade
+      if (this.stndThemeElement && this.stndThemeElement.nextSibling) {
+        document.head.insertBefore(element, this.stndThemeElement.nextSibling);
+      } else {
+        document.head.appendChild(element);
+      }
     }
     this.stndFrontmatterElement = element;
-
-    this.ensureThemeElement();
   }
 
   cleanup() {
@@ -351,10 +347,10 @@ class DesignSystemFeature {
     if (this.plugin.settings.enableDesignSystem) {
       if (activeFile && frontmatter) {
         this.applyFrontmatter(frontmatter);
-      } else {
-        this.clearFrontmatterProperties();
+        await this.applyTheme(frontmatter);
       }
-      await this.applyTheme(frontmatter);
+      // When no file is active (e.g. settings modal has focus), leave the
+      // current theme/frontmatter as-is — don't wipe it.
     } else {
       this.clearFrontmatterProperties();
       this.clearThemeSnippet();
@@ -385,8 +381,9 @@ class DesignSystemFeature {
     }
 
     // Zero-latency cache injection
-    const cachedCss = this.themeCache[theme];
-    if (cachedCss) {
+    const rawCachedCss = this.themeCache[theme];
+    if (rawCachedCss) {
+      const cachedCss = rawCachedCss.replace(/body\.stnd-color\b/g, `[data-theme="${theme}"]`);
       this.lastAppliedThemeSnippetCss = cachedCss;
       this.applyThemeCss(theme, cachedCss);
     } else {
@@ -413,7 +410,9 @@ class DesignSystemFeature {
     try {
       const content = await this.app.vault.read(themeNote);
       const regex = /```css\b.*?\n([\s\S]*?)```/gi;
-      const allCss = [...content.matchAll(regex)].map((m) => m[1]).join("\n");
+      let allCss = [...content.matchAll(regex)].map((m) => m[1]).join("\n");
+      // Normalize stale selectors from older vault notes / adapter output
+      allCss = allCss.replace(/body\.stnd-color\b/g, `[data-theme="${theme}"]`);
 
       if (allCss !== this.lastAppliedThemeSnippetCss) {
         this.lastAppliedThemeSnippetCss = allCss;
@@ -519,7 +518,10 @@ class DesignSystemFeature {
       this.createStyleElements();
 
       // Inject the combined theme (curated tokens + cached snippet) into #stnd-theme
-      const snippetCss = (snap.theme && this.themeCache[snap.theme]) || "";
+      let snippetCss = (snap.theme && this.themeCache[snap.theme]) || "";
+      if (snippetCss) {
+        snippetCss = snippetCss.replace(/body\.stnd-color\b/g, `[data-theme="${snap.theme}"]`);
+      }
       this.applyThemeCss(snap.theme, snippetCss);
       this.lastAppliedThemeSnippetCss = snippetCss;
 
@@ -584,7 +586,13 @@ class DesignSystemFeature {
       ) {
         this.stndFrontmatterElement = document.createElement("style");
         this.stndFrontmatterElement.id = "stnd-frontmatter";
-        document.head.appendChild(this.stndFrontmatterElement);
+        // Insert after #stnd-theme so frontmatter wins the cascade
+        const themeEl = document.getElementById("stnd-theme");
+        if (themeEl && themeEl.nextSibling) {
+          document.head.insertBefore(this.stndFrontmatterElement, themeEl.nextSibling);
+        } else {
+          document.head.appendChild(this.stndFrontmatterElement);
+        }
       }
       let stndFrontmatterElement = this.stndFrontmatterElement;
       const googleFontsImports = Array.from(fontProperties)
