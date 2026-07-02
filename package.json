@@ -2,7 +2,7 @@
   "name": "obsidian-garden",
   "private": true,
   "scripts": {
-    "build": "node build.js && obsidian vault=Atelier plugin:reload id=garden",
+    "build": "node build.js && obsidian vault=Atelier plugin:reload id=obsidian-standard-garden",
     "dev": "pnpm run build && obsidian dev:console",
     "screenshot": "obsidian dev:screenshot"
   },

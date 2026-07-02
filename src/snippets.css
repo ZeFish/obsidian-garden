@@ -3,14 +3,14 @@
 /* Better highlights */
 /* ============================================= */
 
-    body.stnd.theme-light.ptm-highlight-current-line
+    body.stnd-adapter.theme-light.ptm-highlight-current-line
         .ptm-current-line-highlight.ptm-current-line-highlight-box {
         background: var(--background-primary);
         border: 1px solid var(--background-secondary-alt);
         border-left: 0;
         border-right: 0;
     }
-    body.stnd.theme-dark.ptm-highlight-current-line
+    body.stnd-adapter.theme-dark.ptm-highlight-current-line
         .ptm-current-line-highlight.ptm-current-line-highlight-box {
         background: var(--background-secondary);
         mix-blend-mode: overlay;
@@ -26,11 +26,11 @@
     backdrop-filter: blur(2px);
 }
 
-.stnd.is-mobile, .stnd {
+.stnd-adapter.is-mobile, .stnd-adapter {
     --background-modifier-cover: transparent;
     --settings-background: var(--background-primary);
 }
-.stnd.is-mobile .menu {
+.stnd-adapter.is-mobile .menu {
     --menu-background: var(--background-primary);
     --interactive-normal: var(--background-secondary);
 }
@@ -174,25 +174,25 @@
     }
 
 /* --- Snippet: Code.md --- */
-.stnd-sourece .markdown-source-view .cm-editor .cm-line { 
-			white-space: pre 
-					!important; overflow-x: auto; 
+.stnd-sourece .markdown-source-view .cm-editor .cm-line {
+			white-space: pre
+					!important; overflow-x: auto;
 			}
-			
-	.stnd-source .view-header, .stnd-source .workspace-tab-header.is-active { 
+
+	.stnd-source .view-header, .stnd-source .workspace-tab-header.is-active {
 		background-color: var(--background-primary) !important;
 }
 
 .stnd-editing:not(.stnd-source) .cm-gutters {display:none !important;}
 
-.stnd-source .markdown-source-view .cm-editor { 
+.stnd-source .markdown-source-view .cm-editor {
 		--file-line-width: 100%;
 		background-color: var(--background-primary) !important;
-		max-width: 100% !important; 
+		max-width: 100% !important;
 }
-.stnd-source .markdown-source-view .cm-line, .stnd-source .markdown-source-view .cm-hmd-frontmatter { 
+.stnd-source .markdown-source-view .cm-line, .stnd-source .markdown-source-view .cm-hmd-frontmatter {
 		background-color: transparent !important;
-		max-width: 100% !important; 
+		max-width: 100% !important;
 }
 
 .markdown-preview-view pre,
@@ -269,18 +269,18 @@ pre code[class*="language-"] {
     display: none;
 }
 
-/* --- Snippet: Hide Title.md --- */
-.view-header {background:transparent !important;}
+/* --- Snippet: Hide Title.md ---
+body.stnd-adapter:not(.mod-settings) .view-header {background:transparent !important;*/}
 
-.stnd-source .view-header, 
-.workspace-tab-header-container,
-.mod-root {
+.stnd-source .view-header,
+body.stnd-adapter:not(.mod-settings) .workspace-tab-header-container,
+body.stnd-adapter:not(.mod-settings) .mod-root {
 --titlebar-background-focused:transparent !important;
 	background:transparent !important;
 }
 
-.view-header-title-container {opacity:1;}
-.view-header-title-container:hover {opacity:1;}
+body.stnd-adapter:not(.mod-settings) .view-header-title-container {opacity:1;}
+body.stnd-adapter:not(.mod-settings) .view-header-title-container:hover {opacity:1;}
 
 /* --- Snippet: Img Minimize.md --- */
 /* ============================================= */
@@ -299,7 +299,7 @@ pre code[class*="language-"] {
 /* ============================================= */
 /* Remove link underline decoration */
 /* ============================================= */
-body.stnd.stnd {
+body.stnd-adapter.stnd-adapter {
 	--link-decoration: none;
 	--link-external-decoration: none;
 }
@@ -307,7 +307,7 @@ body.stnd.stnd {
 .markdown-reading-view a {
 	text-decoration: none !important;
   }
-  
+
 .markdown-reading-view a:hover {
 	text-decoration: none !important;
   }
@@ -338,7 +338,7 @@ p {
 .bases-embed {
         --bases-embed-border-width: 10px !important;
         --bases-table-font-size: var(--font-size);
-        
+
     }
 
     .bases-tbody,
@@ -393,14 +393,14 @@ p {
 /* Better highlights */
 /* ============================================= */
 
-    body.stnd.theme-light.ptm-highlight-current-line
+    body.stnd-adapter.theme-light.ptm-highlight-current-line
         .ptm-current-line-highlight.ptm-current-line-highlight-box {
         background: var(--background-primary);
         border: 1px solid var(--background-secondary-alt);
         border-left: 0;
         border-right: 0;
     }
-    body.stnd.theme-dark.ptm-highlight-current-line
+    body.stnd-adapter.theme-dark.ptm-highlight-current-line
         .ptm-current-line-highlight.ptm-current-line-highlight-box {
         background: var(--background-secondary);
         mix-blend-mode: overlay;
@@ -462,7 +462,7 @@ p {
     display: none !important;
 }
 
-body.stnd.stnd {
+body.stnd-adapter.stnd-adapter {
     --embed-padding: 0;
     --embed-max-height: unset;
 }
@@ -504,7 +504,7 @@ body.stnd.stnd {
 /* @link https://utopia.fyi/type/calculator?c=1500,16,1.125,2500,32,1.414,0,0,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
 
 @media only screen and (min-width: 1500) {
-    body.stnd.stnd {
+    body.stnd-adapter.stnd-adapter {
         --file-line-width: max(40em, 35vw) !important;
         --font-text-size: clamp(1rem, -0.5rem + 1.6vw, 1.3rem) !important;
         --line-width: max(40em, 35vw) !important;
@@ -512,4 +512,3 @@ body.stnd.stnd {
         --line-height-normal: clamp(1.5rem, 1rem + 0.8vi, 1.3rem) !important;
     }
 }
-

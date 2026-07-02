@@ -77,7 +77,7 @@ const FONT_TOKENS = new Set([
 // Settings interface
 const DEFAULT_SETTINGS = {
   // Design-system layers (frontmatter tokens → CSS variables)
-  enableTheme: false,
+  enableDesignSystem: false,
   startupSnapshot: {
     cssClasses: [],
     theme: "",

@@ -2,9 +2,33 @@
 
 Garden is a powerful design token bridge and CSS adapter for Obsidian, bringing curated typographic rhythm, cohesive color palettes, and advanced syntax highlighting to your vault. It also optionally allows you to publish your notes seamlessly to the web.
 
+## Architecture — the Adapter model
+
+Garden implements the **Standard adapter** for Obsidian. It is one piece of a layered design
+system that spans the web, IDEs, and Obsidian:
+
+```
+Layer 3: User overrides (frontmatter tokens — per-note escape hatch)
+Layer 2: Themes (@stnd/themes — bundled, compiled from tokens.yaml + theme.scss)
+Layer 1: Adapter (.stnd-adapter — this plugin — Obsidian DOM mapping only)
+Layer 0: Framework (@stnd/styles — the golden ratio, the rules, same everywhere)
+```
+
+**The rule:** the adapter contains **only** DOM mapping — translating Standard variables to
+Obsidian-specific selectors (`--file-line-width`, `.markdown-preview-view`, `.workspace-split`,
+etc.). No design decisions (colors, font sizes, spacing) live in the adapter. Those belong to
+the framework (Layer 0) or the theme (Layer 2).
+
+The body class `.stnd-adapter` (toggled in Settings → Design System) activates the adapter.
+When off, the plugin is purely a publishing tool — zero visual changes to the workspace.
+
+Themes are fully bundled from the `@stnd/themes` npm package at build time. The `theme:`
+frontmatter key selects a theme at runtime. See the [monorepo README](https://github.com/ZeFish/utopie)
+for the theme pipeline and the full architecture spec.
+
 ## Features
 
-- **Design System Bridge**: Injects a robust, modern CSS framework directly into your Obsidian workspace.
+- **Design System Adapter**: Injects the Standard framework directly into your Obsidian workspace.
 - **Curated Themes**: Switch instantly between carefully designed, highly legible themes directly from your note's frontmatter.
 - **Advanced Syntax Highlighting**: Enhances code blocks with a post-processor, injecting PrismJS languages seamlessly.
 - **Smart Snippets**: Manage CSS snippets effortlessly without restarting the app.

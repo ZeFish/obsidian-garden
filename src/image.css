@@ -4,14 +4,14 @@
 /* Updated to match v4.0.0 logic while preserving custom aesthetics */
 /* ============================================= */
 
-body.stnd {
+body.stnd-adapter {
     --img-grid-gap: 0.25rlh;
     --image-grid-fit: cover;
 }
 
 /* Base image styling (Aesthetics) */
-body.stnd .markdown-preview-section img,
-body.stnd .markdown-source-view img:not(.cm-widgetBuffer) {
+body.stnd-adapter .markdown-preview-section img,
+body.stnd-adapter .markdown-source-view img:not(.cm-widgetBuffer) {
     object-fit: cover;
     border-radius: var(--radius-m);
     box-shadow:
@@ -21,14 +21,14 @@ body.stnd .markdown-source-view img:not(.cm-widgetBuffer) {
 }
 
 /* Image Embed Container */
-body.stnd .image-embed.is-loaded {
+body.stnd-adapter .image-embed.is-loaded {
     line-height: 0;
     display: flex;
     align-items: stretch;
 }
 
 /* Grid Layout Logic (Triggered for 2+ siblings) */
-body.stnd .markdown-preview-section :is(div, p):has(> :is(.image-embed, img) ~ :is(.image-embed, img)):not(.callout-content p) {
+body.stnd-adapter .markdown-preview-section :is(div, p):has(> :is(.image-embed, img) ~ :is(.image-embed, img)):not(.callout-content p) {
     display: grid;
     margin-block-start: var(--img-grid-gap);
     margin-block-end: var(--img-grid-gap);
@@ -39,7 +39,7 @@ body.stnd .markdown-preview-section :is(div, p):has(> :is(.image-embed, img) ~ :
 }
 
 /* Image behavior inside grid */
-body.stnd .markdown-preview-section :is(div, p):has(> :is(.image-embed, img) ~ :is(.image-embed, img)) :is(img, .internal-embed img) {
+body.stnd-adapter .markdown-preview-section :is(div, p):has(> :is(.image-embed, img) ~ :is(.image-embed, img)) :is(img, .internal-embed img) {
     object-fit: var(--image-grid-fit);
     align-self: stretch;
     height: 100%;
@@ -47,8 +47,8 @@ body.stnd .markdown-preview-section :is(div, p):has(> :is(.image-embed, img) ~ :
 }
 
 /* Artifact Cleanup */
-body.stnd .markdown-preview-section > div:has(img) p:empty,
-body.stnd .markdown-preview-section > div:has(img) :is(img, .image-embed) ~ br {
+body.stnd-adapter .markdown-preview-section > div:has(img) p:empty,
+body.stnd-adapter .markdown-preview-section > div:has(img) :is(img, .image-embed) ~ br {
     display: none;
 }
 
@@ -57,7 +57,7 @@ body.stnd .markdown-preview-section > div:has(img) :is(img, .image-embed) ~ br {
 /* Based on https://github.com/kepano/obsidian-minimal/blob/master/src/scss/features/image-zoom.scss */
 /* ============================================= */
 
-    body.stnd .view-content
+    body.stnd-adapter .view-content
     .markdown-preview-view
     div:not(.canvas-node-content)
     img {
@@ -65,11 +65,11 @@ body.stnd .markdown-preview-section > div:has(img) :is(img, .image-embed) ~ br {
     cursor: zoom-in;
 }
 
-body.stnd .view-content .markdown-preview-view img:active {
+body.stnd-adapter .view-content .markdown-preview-view img:active {
     cursor: zoom-out;
 }
 
-    body.stnd .view-content
+    body.stnd-adapter .view-content
     .markdown-preview-view
     .markdown-preview-view
     img[referrerpolicy="no-referrer"]:active {
@@ -77,11 +77,11 @@ body.stnd .view-content .markdown-preview-view img:active {
     padding: 10px;
 }
 
-    body.stnd .view-content
+    body.stnd-adapter .view-content
     .markdown-preview-view
     .markdown-preview-view
     img[referrerpolicy="no-referrer"]:active,
-    body.stnd .view-content
+    body.stnd-adapter .view-content
     .markdown-preview-view
     .image-embed:not(.canvas-node-content):active {
     --container-img-width: 100%;
@@ -104,7 +104,7 @@ body.stnd .view-content .markdown-preview-view img:active {
     bottom: 0;
 }
 
-    body.stnd .view-content
+    body.stnd-adapter .view-content
     .markdown-preview-view
     .image-embed:not(.canvas-node-content):active:after {
     background-color: var(--background-primary);
@@ -118,7 +118,7 @@ body.stnd .view-content .markdown-preview-view img:active {
     z-index: 98;
 }
 
-    body.stnd .view-content
+    body.stnd-adapter .view-content
     .markdown-preview-view
     .image-embed:not(.canvas-node-content):active
     img {
@@ -140,7 +140,7 @@ body.stnd .view-content .markdown-preview-view img:active {
     box-shadow: none;
 }
 
-    body.stnd .view-content
+    body.stnd-adapter .view-content
     .markdown-preview-view
     .markdown-source-view.mod-cm6
     .cm-content

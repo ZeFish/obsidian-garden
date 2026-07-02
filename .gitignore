@@ -5,3 +5,5 @@ data.json
 *.css.map
 .DS_Store
 .zed/
+obisidan-garden/
+obisidan-standard-garden/

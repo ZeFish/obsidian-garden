@@ -315,10 +315,8 @@ class DesignSystemFeature {
     let frontmatter = null;
 
     // 1. Global settings
-    if (this.plugin.settings.enableTheme) {
-      newClasses.add("stnd-typography");
-      newClasses.add("stnd-color");
-      newClasses.add("stnd-vertical-rhythm");
+    if (this.plugin.settings.enableDesignSystem) {
+      newClasses.add("stnd-adapter");
     }
 
     // 2. Per-note frontmatter
@@ -400,14 +398,20 @@ class DesignSystemFeature {
     this.appliedClasses = newClasses;
 
     // 4. Design-token properties from frontmatter
-    if (activeFile && frontmatter) {
-      this.applyFrontmatter(frontmatter);
+    // 5. Theme selection (theme: frontmatter → data-theme on body)
+    if (this.plugin.settings.enableDesignSystem) {
+      if (activeFile && frontmatter) {
+        this.applyFrontmatter(frontmatter);
+      } else {
+        this.clearFrontmatterProperties();
+      }
+      await this.applyTheme(frontmatter);
     } else {
       this.clearFrontmatterProperties();
+      this.clearThemeSnippet();
+      document.body.removeAttribute("data-theme");
+      this.applyThemeTokens(null);
     }
-
-    // 5. Theme selection (theme: frontmatter → data-theme on body)
-    await this.applyTheme(frontmatter);
 
     // Save snapshot for next startup
     this.saveStartupSnapshot(newClasses, frontmatter);
@@ -441,6 +445,7 @@ class DesignSystemFeature {
     const cachedCss = this.themeCache[theme];
     if (cachedCss && this.stndThemeSnippetElement) {
       this.stndThemeSnippetElement.textContent = cachedCss;
+      document.head.appendChild(this.stndThemeSnippetElement);
       this.lastAppliedThemeSnippetCss = cachedCss;
     } else {
       // If not in cache and not the currently applied CSS, clear to avoid
@@ -474,6 +479,7 @@ class DesignSystemFeature {
       if (allCss !== this.lastAppliedThemeSnippetCss) {
         if (this.stndThemeSnippetElement) {
           this.stndThemeSnippetElement.textContent = allCss;
+          document.head.appendChild(this.stndThemeSnippetElement);
         }
         this.lastAppliedThemeSnippetCss = allCss;
         this.lastAppliedThemePath = themeNote.path;
@@ -574,41 +580,35 @@ class DesignSystemFeature {
     }
 
     // 2. Apply global settings classes
-    if (this.plugin.settings.enableTheme) {
-      const globalClasses = [
-        "stnd-typography",
-        "stnd-color",
-        "stnd-vertical-rhythm",
-      ];
-      globalClasses.forEach((cls) => {
-        document.body.classList.add(cls);
-        this.appliedClasses.add(cls);
-      });
+    if (this.plugin.settings.enableDesignSystem) {
+      document.body.classList.add("stnd-adapter");
+      this.appliedClasses.add("stnd-adapter");
     }
 
-    // 3. Apply active theme (attribute + curated token block, synchronously —
-    //    THEMES is bundled, so no I/O and no flash on startup)
-    if (snap.theme) {
-      document.body.setAttribute("data-theme", snap.theme);
-    }
-    this.applyThemeTokens(snap.theme);
-
-    // 4. Create style elements and inject cached CSS
-    this.createStyleElements();
-
-    // Custom design tokens
-    if (snap.customCss && this.stndFrontmatterElement) {
-      this.stndFrontmatterElement.textContent = snap.customCss;
-      this.lastAppliedCustomCss = snap.customCss;
-    }
-
-    // Theme snippet (from local themeCache loaded in load())
-    if (snap.theme && this.themeCache[snap.theme]) {
-      const themeCss = this.themeCache[snap.theme];
-      if (this.stndThemeSnippetElement) {
-        this.stndThemeSnippetElement.textContent = themeCss;
-        this.lastAppliedThemeSnippetCss = themeCss;
+    // 3. Apply active theme + design tokens (only when design system is enabled)
+    if (this.plugin.settings.enableDesignSystem) {
+      if (snap.theme) {
+        document.body.setAttribute("data-theme", snap.theme);
       }
+      this.applyThemeTokens(snap.theme);
+
+      this.createStyleElements();
+
+      if (snap.customCss && this.stndFrontmatterElement) {
+        this.stndFrontmatterElement.textContent = snap.customCss;
+        this.lastAppliedCustomCss = snap.customCss;
+      }
+
+      if (snap.theme && this.themeCache[snap.theme]) {
+        const themeCss = this.themeCache[snap.theme];
+        if (this.stndThemeSnippetElement) {
+          this.stndThemeSnippetElement.textContent = themeCss;
+          document.head.appendChild(this.stndThemeSnippetElement);
+          this.lastAppliedThemeSnippetCss = themeCss;
+        }
+      }
+    } else {
+      this.createStyleElements();
     }
 
     this.hasAppliedStartupSnapshot = true;
@@ -665,7 +665,12 @@ class DesignSystemFeature {
       ) {
         this.stndFrontmatterElement = document.createElement("style");
         this.stndFrontmatterElement.id = "stnd-frontmatter";
-        document.head.appendChild(this.stndFrontmatterElement);
+        const themeEl = document.getElementById("stnd-theme-snippet");
+        if (themeEl) {
+          document.head.insertBefore(this.stndFrontmatterElement, themeEl);
+        } else {
+          document.head.appendChild(this.stndFrontmatterElement);
+        }
       }
       let stndFrontmatterElement = this.stndFrontmatterElement;
       const googleFontsImports = Array.from(fontProperties)

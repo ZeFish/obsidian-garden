@@ -67,9 +67,7 @@ esbuild
     // Base + feature CSS only. Curated themes are bundled into main.js (above).
     const filesToCombine = [
       "base.css",
-      "typography.css",
-      "color.css",
-      "rhythm.css",
+      "design-system.css",
       "panel.css",
       "image.css",
       "snippets.css",
@@ -119,10 +117,8 @@ esbuild
     const vaultPlugins =
       process.env.VAULT_PLUGINS ||
       path.join(
-        __dirname,
-        "..",
-        "..",
-        "vault",
+        require("os").homedir(),
+        "Documents",
         "Atelier",
         ".obsidian",
         "plugins",

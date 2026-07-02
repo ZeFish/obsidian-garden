@@ -6,16 +6,14 @@
 /* Chisel defaults are used as fallbacks.         */
 /* ============================================= */
 
-body.stnd {
-  /* Prevent standard.css from limiting the Obsidian window size or adding global paddings */
+body.stnd-adapter {
   --body-max-width: none;
-  padding: 0 !important;
 
   /* Typography bridge */
   --font-header: var(--font-text);
-  --font-density: 1.7; /*var(--line-height, 1.7);*/
-  --font-ratio: 1.33; /*var(--optical-ratio, var(--scale-ratio, 1.333));*/
-  --font-line-width: 40rem; /*var(--line-width, var(--file-line-width, 40rem));*/
+  --font-density: 1.7;
+  --font-ratio: 1.33;
+  --font-line-width: 40rem;
   --font-weight: 400;
   --font-feature: "";
   --font-variation: "";
@@ -32,8 +30,12 @@ body.stnd {
   --font-interface-variation: "";
 }
 
+body.stnd-adapter:not(:has(.modal.mod-settings)) {
+  padding: 0 !important;
+}
+
 /* Force native buttons in Obsidian to drop the web framework's shadow and borders */
-body.stnd button:not(.btn) {
+body.stnd-adapter button:not(.btn) {
   box-shadow: none !important;
   border-color: transparent !important;
   background-color: transparent;
@@ -44,29 +46,29 @@ body.stnd button:not(.btn) {
  * centering mechanism (.is-readable-line-width) and causes text to stick to the left.
  * We disable it globally for Obsidian so it can manage its own container width. 
  */
-body.stnd p,
-body.stnd h1,
-body.stnd h2,
-body.stnd h3,
-body.stnd h4,
-body.stnd h5,
-body.stnd h6,
-body.stnd li,
-body.stnd div.callout,
-body.stnd summary {
+body.stnd-adapter p,
+body.stnd-adapter h1,
+body.stnd-adapter h2,
+body.stnd-adapter h3,
+body.stnd-adapter h4,
+body.stnd-adapter h5,
+body.stnd-adapter h6,
+body.stnd-adapter li,
+body.stnd-adapter div.callout,
+body.stnd-adapter summary {
   max-width: unset;
 }
 
 /* ─── Sidebar transition ──────────────────────────────────────────────────── */
 
-body:not(.is-mobile).stnd .workspace-split.mod-left-split,
-body:not(.is-mobile).stnd .workspace-split.mod-right-split,
-body:not(.is-mobile).stnd .workspace-ribbon.mod-left {
+body:not(.is-mobile).stnd-adapter .workspace-split.mod-left-split,
+body:not(.is-mobile).stnd-adapter .workspace-split.mod-right-split,
+body:not(.is-mobile).stnd-adapter .workspace-ribbon.mod-left {
   transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
   transition: 0;
 }
 
-body.stnd .inline-title {
+body.stnd-adapter .inline-title {
   margin-block-start: var(--img-grid-gap);
 }
 
@@ -153,14 +155,14 @@ body.stnd-single-tab .mod-root .workspace-tabs .workspace-tab-header-container {
 
 /* ─── Resize handle ──────────────────────────────────────────────────────── */
 
-body:not(.is-mobile).stnd .workspace-leaf-resize-handle {
+body:not(.is-mobile).stnd-adapter .workspace-leaf-resize-handle {
   width: 8px !important;
   border-radius: 4px;
   background: transparent;
   transition: background 0.2s;
 }
-body:not(.is-mobile).stnd .workspace-leaf-resize-handle:hover,
-body:not(.is-mobile).stnd .workspace-leaf-resize-handle:active {
+body:not(.is-mobile).stnd-adapter .workspace-leaf-resize-handle:hover,
+body:not(.is-mobile).stnd-adapter .workspace-leaf-resize-handle:active {
   background: color-mix(in srgb, var(--text-normal) 12%, transparent);
 }
 
