@@ -80,7 +80,7 @@ const DEFAULT_SETTINGS = {
   enableDesignSystem: false,
   
   // Artisan Tools (Helpers)
-  enableHotFolder: false,
+  enableSeedbeds: false,
   enableScrollMap: false,
   enableSnippets: false,
   enableMycelium: false,
@@ -88,6 +88,17 @@ const DEFAULT_SETTINGS = {
   enableSyntaxPreview: false,
   enableDailyNav: false,
 
+  seedbeds: {
+    rules: [
+      {
+        folder: "Journal/Daily",
+        frontmatter: {
+          tags: ["daily"],
+          status: "log"
+        }
+      }
+    ]
+  },
   startupSnapshot: {
     cssClasses: [],
     theme: "",

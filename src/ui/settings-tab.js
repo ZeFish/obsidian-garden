@@ -9,7 +9,7 @@ const { GeneralSettingTab } = require("./general-tab.js");
 
 // Feature setting tabs
 // (Echo, Hollow, Feed moved to the Atelier plugin — see apps/obsidian-atelier.)
-const { HotFolderSettingTab } = require("../features/hot-folder/index.js");
+const { SeedbedsSettingTab } = require("../features/seedbeds/index.js");
 const { MyceliumSettingTab } = require("../features/mycelium/index.js");
 const { ScrollMapSettingTab } = require("../features/scroll-map/index.js");
 const { SnippetManagerSettingTab } = require("../features/snippet-manager/index.js");
@@ -34,7 +34,7 @@ class ArtisanSettingTab {
 
     const tools = [
       { id: "enableDesignSystem", name: "Wood Cuts (Design System)", desc: "Classical typography and visual temperaments for your garden." },
-      { id: "enableHotFolder", name: "Hot Folder", desc: "Automatically route your notes to specific plots based on rules." },
+      { id: "enableSeedbeds", name: "Seedbeds", desc: "Automatically route your notes to specific plots based on rules." },
       { id: "enableScrollMap", name: "Scroll Map", desc: "A mini-map showing your vertical progress on the trail." },
       { id: "enableSnippets", name: "Snippets", desc: "Custom carving tools (CSS snippets) to alter the grain." },
       { id: "enableMycelium", name: "Mycelium", desc: "Tends the roots of your garden (unlinked mentions discovery)." },
@@ -101,8 +101,8 @@ class StandardSettingTab extends obsidian_1.PluginSettingTab {
     if (this.plugin.settings.enableDesignSystem) {
       tabs.push({ id: "Wood Cuts (Design)", tab: new DesignSystemSettingTab(this.app, this.plugin) });
     }
-    if (this.plugin.settings.enableHotFolder) {
-      tabs.push({ id: "Hot Folder", tab: new HotFolderSettingTab(this.app, this.plugin) });
+    if (this.plugin.settings.enableSeedbeds) {
+      tabs.push({ id: "Seedbeds", tab: new SeedbedsSettingTab(this.app, this.plugin) });
     }
     if (this.plugin.settings.enableSnippets) {
       tabs.push({ id: "Snippets", tab: new SnippetManagerSettingTab(this.app, this.plugin) });

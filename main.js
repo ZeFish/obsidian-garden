@@ -80,7 +80,7 @@ class StandardPlugin extends obsidian_1.Plugin {
   async loadRemainingFeatures(startTime) {
     // Lazy-require functional features to avoid execution cost during Phase 1/2
     const { GardenFeature } = require("./src/core/garden/index.js");
-    const { HotFolderFeature } = require("./src/features/hot-folder/index.js");
+    const { SeedbedsFeature } = require("./src/features/seedbeds/index.js");
     const {
       InterfaceManagerFeature,
     } = require("./src/features/interface-manager/index.js");
@@ -121,8 +121,8 @@ class StandardPlugin extends obsidian_1.Plugin {
       this.mycelium = new MyceliumFeature(this.app, this);
       functionalInstances.push(this.mycelium);
     }
-    if (this.settings.enableHotFolder) {
-      functionalInstances.push(new HotFolderFeature(this.app, this));
+    if (this.settings.enableSeedbeds) {
+      functionalInstances.push(new SeedbedsFeature(this.app, this));
     }
     if (this.settings.enableScrollMap) {
       functionalInstances.push(new ScrollMapFeature(this.app, this));
