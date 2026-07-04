@@ -21,6 +21,12 @@ class Base64FoldWidget extends WidgetType {
   }
 }
 
+// Matches url(data:<mime>;base64,<data>) for any MIME type, including
+// application/* (fonts embedded in @font-face) and optional parameters
+// like ;charset=utf-8 that may appear before ;base64,.
+const base64UrlRegex =
+  /url\(['"]?data:[\w.+-]+\/[\w.+-]+(?:;[\w.+-]+=[\w.+-]+)*;base64,([A-Za-z0-9+/=]+)['"]?\)/g;
+
 const base64FoldPlugin = ViewPlugin.fromClass(
   class {
     constructor(view) {
@@ -35,9 +41,7 @@ const base64FoldPlugin = ViewPlugin.fromClass(
 
     buildDecorations(view) {
       const builder = [];
-      // Match the entire url(...) containing data:font/mime;base64,...
-      const regex =
-        /url\(['"]?data:(?:font|image)\/[\w-]+;base64,([A-Za-z0-9+/=]+)['"]?\)/g;
+      const regex = new RegExp(base64UrlRegex.source, "g");
       const processedLines = new Set();
 
       for (let { from, to } of view.visibleRanges) {
@@ -154,8 +158,7 @@ class Base64FoldFeature {
           }
 
           // 3. Find base64 strings in the continuous text
-          const regex =
-            /url\(['"]?data:(?:font|image)\/[\w-]+;base64,([A-Za-z0-9+/=]+)['"]?\)/g;
+          const regex = new RegExp(base64UrlRegex.source, "g");
           let match;
           // Process matches in reverse order so DOM mutations don't mess up earlier offsets
           const matches = [];
