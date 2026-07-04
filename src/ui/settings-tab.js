@@ -15,11 +15,56 @@ const { ScrollMapSettingTab } = require("../features/scroll-map/index.js");
 const { SnippetManagerSettingTab } = require("../features/snippet-manager/index.js");
 const { MediaManagerSettingTab } = require("../features/vault-audit/index.js");
 
+class ArtisanSettingTab {
+  constructor(app, plugin, parentTab) {
+    this.app = app;
+    this.plugin = plugin;
+    this.parentTab = parentTab;
+  }
+
+  display() {
+    const { containerEl } = this;
+    containerEl.empty();
+    
+    containerEl.createEl("h3", { text: "🪚 Artisan Tools" });
+    containerEl.createEl("p", { 
+      text: "Sculpt your writing experience with these optional tools. Enable only what you need to keep your path unobstructed.",
+      cls: "setting-item-description"
+    });
+
+    const tools = [
+      { id: "enableDesignSystem", name: "Wood Cuts (Design System)", desc: "Classical typography and visual temperaments for your garden." },
+      { id: "enableHotFolder", name: "Hot Folder", desc: "Automatically route your notes to specific plots based on rules." },
+      { id: "enableScrollMap", name: "Scroll Map", desc: "A mini-map showing your vertical progress on the trail." },
+      { id: "enableSnippets", name: "Snippets", desc: "Custom carving tools (CSS snippets) to alter the grain." },
+      { id: "enableLinkAssist", name: "Link Assist", desc: "Helper for crafting the Mycelium (backlinks, tags)." },
+      { id: "enableBase64Fold", name: "Base64 Fold", desc: "Hide complex image roots to keep your raw text clean." },
+      { id: "enableSyntaxPreview", name: "Syntax Preview", desc: "Live preview of formatting while you type." },
+      { id: "enableDailyNav", name: "Daily Nav", desc: "Walk the daily trails with chronological navigation." }
+    ];
+
+    for (const tool of tools) {
+      new obsidian_1.Setting(containerEl)
+        .setName(tool.name)
+        .setDesc(tool.desc)
+        .addToggle((toggle) => {
+          toggle.setValue(this.plugin.settings[tool.id] || false)
+            .onChange(async (val) => {
+              this.plugin.settings[tool.id] = val;
+              await this.plugin.saveSettings();
+              new obsidian_1.Notice(tool.name + (val ? " enabled. Restart Obsidian to apply." : " disabled. Restart Obsidian to apply."));
+              this.parentTab.display(); // Refresh tabs
+            });
+        });
+    }
+  }
+}
+
 class StandardSettingTab extends obsidian_1.PluginSettingTab {
   constructor(app, plugin) {
     super(app, plugin);
     this.plugin = plugin;
-    this.currentTab = "Garden";
+    this.currentTab = "The Gatehouse (Garden)";
   }
 
   display() {
@@ -42,16 +87,33 @@ class StandardSettingTab extends obsidian_1.PluginSettingTab {
     const navEl = containerEl.createEl("div", { cls: "stnd-settings-nav" });
     navEl.style.cssText = `display: flex; justify-content: flex-start; gap: 6px; flex-wrap: wrap; margin: ${hasHeader ? "0" : "12px"} 0 12px;`;
 
-    const tabs = [
-      { id: "Garden", tab: new GardenSettingTab(this.app, this.plugin) },
-      { id: "Hot Folder", tab: new HotFolderSettingTab(this.app, this.plugin) },
-      { id: "General", tab: new GeneralSettingTab(this.app, this.plugin) },
-      { id: "Design System", tab: new DesignSystemSettingTab(this.app, this.plugin) },
-      { id: "Snippets", tab: new SnippetManagerSettingTab(this.app, this.plugin) },
-      { id: "Link Assist", tab: new LinkAssistSettingTab(this.app, this.plugin) },
-      { id: "Scroll Map", tab: new ScrollMapSettingTab(this.app, this.plugin) },
-      { id: "Media Manager", tab: new MediaManagerSettingTab(this.app, this.plugin) },
-    ];
+    const tabs = [];
+    
+    // Core Tabs
+    tabs.push({ id: "The Gatehouse (Garden)", tab: new GardenSettingTab(this.app, this.plugin) });
+    tabs.push({ id: "The Soil (General)", tab: new GeneralSettingTab(this.app, this.plugin) });
+    tabs.push({ id: "Media Manager", tab: new MediaManagerSettingTab(this.app, this.plugin) });
+    
+    // Artisan Tools (Toggle Tab)
+    tabs.push({ id: "Artisan Tools", tab: new ArtisanSettingTab(this.app, this.plugin, this) });
+    
+    // Conditionally pushed feature tabs
+    if (this.plugin.settings.enableDesignSystem) {
+      tabs.push({ id: "Wood Cuts (Design)", tab: new DesignSystemSettingTab(this.app, this.plugin) });
+    }
+    if (this.plugin.settings.enableHotFolder) {
+      tabs.push({ id: "Hot Folder", tab: new HotFolderSettingTab(this.app, this.plugin) });
+    }
+    if (this.plugin.settings.enableSnippets) {
+      tabs.push({ id: "Snippets", tab: new SnippetManagerSettingTab(this.app, this.plugin) });
+    }
+    if (this.plugin.settings.enableLinkAssist) {
+      tabs.push({ id: "Link Assist", tab: new LinkAssistSettingTab(this.app, this.plugin) });
+    }
+    if (this.plugin.settings.enableScrollMap) {
+      tabs.push({ id: "Scroll Map", tab: new ScrollMapSettingTab(this.app, this.plugin) });
+    }
+
 
     for (const { id } of tabs) {
       const button = navEl.createEl("button", {

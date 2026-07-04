@@ -78,6 +78,16 @@ const FONT_TOKENS = new Set([
 const DEFAULT_SETTINGS = {
   // Design-system layers (frontmatter tokens → CSS variables)
   enableDesignSystem: false,
+  
+  // Artisan Tools (Helpers)
+  enableHotFolder: false,
+  enableScrollMap: false,
+  enableSnippets: false,
+  enableLinkAssist: false,
+  enableBase64Fold: false,
+  enableSyntaxPreview: false,
+  enableDailyNav: false,
+
   startupSnapshot: {
     cssClasses: [],
     theme: "",
@@ -108,7 +118,6 @@ const DEFAULT_SETTINGS = {
     hideUnlinkedIfLinked: true
   },
   dailyNav: {
-    enabled: true,
     navigationMode: "chronological"
   }
 };

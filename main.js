@@ -47,18 +47,27 @@ class StandardPlugin extends obsidian_1.Plugin {
       SnippetManagerFeature,
     } = require("./src/features/snippet-manager/index.js");
 
-    this.design = new DesignSystemFeature(this.app, this);
-    const snippetManager = new SnippetManagerFeature(this.app, this);
+    this.features = [];
 
-    this.features = [this.design, snippetManager];
+    if (this.settings.enableDesignSystem) {
+      this.design = new DesignSystemFeature(this.app, this);
+      this.features.push(this.design);
+    }
+    
+    if (this.settings.enableSnippets) {
+      this.snippetManager = new SnippetManagerFeature(this.app, this);
+      this.features.push(this.snippetManager);
+    }
 
     // Load visual features in parallel
-    await Promise.all([this.design.load(), snippetManager.load()]);
+    await Promise.all(this.features.map(f => f.load()));
 
     // Inject the last session's visual state (classes, theme, tokens)
     // synchronously so the UI is themed before the first render. Runs after the
     // visual features are loaded so stnd-theme-snippet is appended after stnd-global.
-    this.design.applyStartupSnapshotSynchronously();
+    if (this.design) {
+      this.design.applyStartupSnapshotSynchronously();
+    }
 
     // ─── Phase 3: Deferred Registration ──────────────────────────────────────
     // Everything else (functional features, icons, commands) is deferred to
@@ -95,6 +104,7 @@ class StandardPlugin extends obsidian_1.Plugin {
     const { DailyNavFeature } = require("./src/features/daily-nav/index.js");
 
     this.garden = new GardenFeature(this.app, this);
+    this.features.push(this.garden);
 
     // Account linking: the /connect-obsidian web page hands the API key back via
     // obsidian://standard-connect?key=…&username=…&state=… (see Garden.startConnect).
@@ -102,21 +112,30 @@ class StandardPlugin extends obsidian_1.Plugin {
       this.garden.handleConnectCallback(params);
     });
 
-    this.linkAssist = new LinkAssistFeature(this.app, this);
+    const functionalInstances = [];
+    functionalInstances.push(new InterfaceManagerFeature(this.app, this));
+    functionalInstances.push(new PublishStatusFeature(this.app, this));
+    functionalInstances.push(new VaultAuditFeature(this.app, this));
 
-    const functionalInstances = [
-      this.garden,
-      new HotFolderFeature(this.app, this),
-      new InterfaceManagerFeature(this.app, this),
-      this.linkAssist,
-
-      new ScrollMapFeature(this.app, this),
-      new Base64FoldFeature(this.app, this),
-      new PublishStatusFeature(this.app, this),
-      new VaultAuditFeature(this.app, this),
-      new SyntaxPreviewFeature(this.app, this),
-      new DailyNavFeature(this.app, this),
-    ];
+    if (this.settings.enableLinkAssist) {
+      this.linkAssist = new LinkAssistFeature(this.app, this);
+      functionalInstances.push(this.linkAssist);
+    }
+    if (this.settings.enableHotFolder) {
+      functionalInstances.push(new HotFolderFeature(this.app, this));
+    }
+    if (this.settings.enableScrollMap) {
+      functionalInstances.push(new ScrollMapFeature(this.app, this));
+    }
+    if (this.settings.enableBase64Fold) {
+      functionalInstances.push(new Base64FoldFeature(this.app, this));
+    }
+    if (this.settings.enableSyntaxPreview) {
+      functionalInstances.push(new SyntaxPreviewFeature(this.app, this));
+    }
+    if (this.settings.enableDailyNav) {
+      functionalInstances.push(new DailyNavFeature(this.app, this));
+    }
 
     this.features.push(...functionalInstances);
 
