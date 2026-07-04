@@ -228,7 +228,7 @@ class StandardGardenView extends obsidian_1.ItemView {
       }
     } else {
       const notice = statusRow.createEl("span", {
-        text: "Add an API key in settings to publish.",
+        text: "Add an API key in settings to plant seeds.",
         cls: "stnd-panel-meta",
       });
       notice.style.fontStyle = "italic";
@@ -238,7 +238,7 @@ class StandardGardenView extends obsidian_1.ItemView {
       const actions = statusRow.createEl("div", { cls: "stnd-panel-actions" });
 
       const publishBtn = actions.createEl("button", {
-        text: isConfirmedOnline ? "Update" : "Publish",
+        text: isConfirmedOnline ? "Tend Soil" : "Plant Seed",
         cls: "stnd-panel-btn",
       });
       publishBtn.addEventListener("click", async () => {
@@ -246,15 +246,15 @@ class StandardGardenView extends obsidian_1.ItemView {
         publishBtn.textContent = "...";
         const ok = await this.plugin.garden.publishWithCheck(file);
         if (ok === true) {
-          new obsidian_1.Notice(`"${file.basename}" published.`);
+          new obsidian_1.Notice(`"${file.basename}" planted.`);
           this.render();
         } else if (ok === false) {
-          new obsidian_1.Notice(`Failed to publish "${file.basename}".`);
+          new obsidian_1.Notice(`Failed to plant "${file.basename}".`);
           this.render();
         } else {
           // null = user cancelled the confirmation — restore button
           publishBtn.disabled = false;
-          publishBtn.textContent = isConfirmedOnline ? "Update" : "Publish";
+          publishBtn.textContent = isConfirmedOnline ? "Tend Soil" : "Plant Seed";
         }
       });
 

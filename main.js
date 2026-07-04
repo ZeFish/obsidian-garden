@@ -152,12 +152,12 @@ class StandardPlugin extends obsidian_1.Plugin {
     });
     this.addCommand({
       id: "publish-current-note",
-      name: "Publish current note",
+      name: "Plant seed (Publish current note)",
       callback: () => this.garden.publishCurrentNote(),
     });
     this.addCommand({
       id: "unpublish-current-note",
-      name: "Unpublish current note (remove from garden)",
+      name: "Uproot seed (Remove from garden)",
       callback: () => this.garden.unpublishCurrentNote(),
     });
     this.addCommand({
@@ -167,7 +167,7 @@ class StandardPlugin extends obsidian_1.Plugin {
     });
     this.addCommand({
       id: "sync-all-published",
-      name: "Sync all published notes",
+      name: "Tend the garden (Sync all notes)",
       callback: () => this.garden.syncAllPublished(),
     });
 
