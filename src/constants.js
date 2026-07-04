@@ -83,7 +83,7 @@ const DEFAULT_SETTINGS = {
   enableHotFolder: false,
   enableScrollMap: false,
   enableSnippets: false,
-  enableLinkAssist: false,
+  enableMycelium: false,
   enableBase64Fold: false,
   enableSyntaxPreview: false,
   enableDailyNav: false,
@@ -110,12 +110,10 @@ const DEFAULT_SETTINGS = {
     timestampRegex: "^\\d{6}_\\d{4}_",
     excludeFolders: []
   },
-  linkAssist: {
-    blockedTag: "backlink-exclude",
-    hideLinkedMentions: false,
-    localFilters: [],
-    onlyLastLinkClickable: false,
-    hideUnlinkedIfLinked: true
+  mycelium: {
+    enableGhostLinks: false,
+    enableGraftingCommand: true,
+    enableCompostFooter: true
   },
   dailyNav: {
     navigationMode: "chronological"

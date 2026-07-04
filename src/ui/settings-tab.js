@@ -10,7 +10,7 @@ const { GeneralSettingTab } = require("./general-tab.js");
 // Feature setting tabs
 // (Echo, Hollow, Feed moved to the Atelier plugin — see apps/obsidian-atelier.)
 const { HotFolderSettingTab } = require("../features/hot-folder/index.js");
-const { LinkAssistSettingTab } = require("../features/link-assist/index.js");
+const { MyceliumSettingTab } = require("../features/mycelium/index.js");
 const { ScrollMapSettingTab } = require("../features/scroll-map/index.js");
 const { SnippetManagerSettingTab } = require("../features/snippet-manager/index.js");
 const { MediaManagerSettingTab } = require("../features/vault-audit/index.js");
@@ -37,7 +37,7 @@ class ArtisanSettingTab {
       { id: "enableHotFolder", name: "Hot Folder", desc: "Automatically route your notes to specific plots based on rules." },
       { id: "enableScrollMap", name: "Scroll Map", desc: "A mini-map showing your vertical progress on the trail." },
       { id: "enableSnippets", name: "Snippets", desc: "Custom carving tools (CSS snippets) to alter the grain." },
-      { id: "enableLinkAssist", name: "Link Assist", desc: "Helper for crafting the Mycelium (backlinks, tags)." },
+      { id: "enableMycelium", name: "Mycelium", desc: "Tends the roots of your garden (unlinked mentions discovery)." },
       { id: "enableBase64Fold", name: "Base64 Fold", desc: "Hide complex image roots to keep your raw text clean." },
       { id: "enableSyntaxPreview", name: "Syntax Preview", desc: "Live preview of formatting while you type." },
       { id: "enableDailyNav", name: "Daily Nav", desc: "Walk the daily trails with chronological navigation." }
@@ -107,8 +107,8 @@ class StandardSettingTab extends obsidian_1.PluginSettingTab {
     if (this.plugin.settings.enableSnippets) {
       tabs.push({ id: "Snippets", tab: new SnippetManagerSettingTab(this.app, this.plugin) });
     }
-    if (this.plugin.settings.enableLinkAssist) {
-      tabs.push({ id: "Link Assist", tab: new LinkAssistSettingTab(this.app, this.plugin) });
+    if (this.plugin.settings.enableMycelium) {
+      tabs.push({ id: "Mycelium", tab: new MyceliumSettingTab(this.app, this.plugin) });
     }
     if (this.plugin.settings.enableScrollMap) {
       tabs.push({ id: "Scroll Map", tab: new ScrollMapSettingTab(this.app, this.plugin) });

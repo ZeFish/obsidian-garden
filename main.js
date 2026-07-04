@@ -85,8 +85,8 @@ class StandardPlugin extends obsidian_1.Plugin {
       InterfaceManagerFeature,
     } = require("./src/features/interface-manager/index.js");
     const {
-      LinkAssistFeature,
-    } = require("./src/features/link-assist/index.js");
+      MyceliumFeature,
+    } = require("./src/features/mycelium/index.js");
 
     const { ScrollMapFeature } = require("./src/features/scroll-map/index.js");
     const {
@@ -117,9 +117,9 @@ class StandardPlugin extends obsidian_1.Plugin {
     functionalInstances.push(new PublishStatusFeature(this.app, this));
     functionalInstances.push(new VaultAuditFeature(this.app, this));
 
-    if (this.settings.enableLinkAssist) {
-      this.linkAssist = new LinkAssistFeature(this.app, this);
-      functionalInstances.push(this.linkAssist);
+    if (this.settings.enableMycelium) {
+      this.mycelium = new MyceliumFeature(this.app, this);
+      functionalInstances.push(this.mycelium);
     }
     if (this.settings.enableHotFolder) {
       functionalInstances.push(new HotFolderFeature(this.app, this));
