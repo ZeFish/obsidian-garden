@@ -441,12 +441,12 @@ class LinkAssistSettingTab extends PluginSettingTab {
     });
     desc.createEl("a", {
       text: "View Link Assist Manual",
-      href: "https://stnd.build/guides/obsidian-plugin#5-link-assist",
+      href: "https://stnd.build/3-archives/obsidian-plugin#5-link-assist",
     });
 
     new Setting(containerEl)
       .setName("Exclusion tag")
-      .setDesc(descWithLinks("Tag used to hide notes from linked mentions (without the #). § for the full list of what gets filtered.", [{ text: "See the Link Assist guide", href: "https://stnd.build/guides/obsidian-plugin#5-link-assist" }]))
+      .setDesc(descWithLinks("Tag used to hide notes from linked mentions (without the #). § for the full list of what gets filtered.", [{ text: "See the Link Assist guide", href: "https://stnd.build/3-archives/obsidian-plugin#5-link-assist" }]))
       .addText((text) =>
         text
           .setPlaceholder("backlink-exclude")
@@ -459,7 +459,7 @@ class LinkAssistSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName("Hide already linked mentions")
-      .setDesc(descWithLinks("Hide unlinked mentions of a note if it already contains an explicit link to it — §.", [{ text: "learn how mention filtering works", href: "https://stnd.build/guides/obsidian-plugin#5-link-assist" }]))
+      .setDesc(descWithLinks("Hide unlinked mentions of a note if it already contains an explicit link to it — §.", [{ text: "learn how mention filtering works", href: "https://stnd.build/3-archives/obsidian-plugin#5-link-assist" }]))
       .addToggle((toggle) =>
         toggle
           .setValue(this.settings.hideUnlinkedIfLinked || false)
@@ -471,7 +471,7 @@ class LinkAssistSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName("Unique clickable link")
-      .setDesc(descWithLinks("Only make the last occurrence of the same link in a note clickable (previous ones appear as plain text). § for readability rationale.", [{ text: "Read the docs", href: "https://stnd.build/guides/obsidian-plugin#5-link-assist" }]))
+      .setDesc(descWithLinks("Only make the last occurrence of the same link in a note clickable (previous ones appear as plain text). § for readability rationale.", [{ text: "Read the docs", href: "https://stnd.build/3-archives/obsidian-plugin#5-link-assist" }]))
       .addToggle((toggle) =>
         toggle
           .setValue(this.settings.onlyLastLinkClickable || false)
@@ -546,7 +546,7 @@ class LinkAssistSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName("Add filter rule")
-      .setDesc(descWithLinks("Hide mentions based on crossed tags. § to understand the rule logic.", [{ text: "View cross-filter guide", href: "https://stnd.build/guides/obsidian-plugin#5-link-assist" }]))
+      .setDesc(descWithLinks("Hide mentions based on crossed tags. § to understand the rule logic.", [{ text: "View cross-filter guide", href: "https://stnd.build/3-archives/obsidian-plugin#5-link-assist" }]))
       .addButton((btn) =>
         btn
           .setButtonText("+ Add a rule")

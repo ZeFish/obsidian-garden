@@ -127,7 +127,7 @@ const DEFAULT_SETTINGS = {
  * @example
  * .setDesc(descWithLinks(
  *   "Manage folder rules. § for more details.",
- *   [{ text: "Read the guide", href: "https://stnd.build/guides/obsidian-plugin#2-hot-folder" }]
+ *   [{ text: "Read the guide", href: "https://stnd.build/3-archives/obsidian-plugin#2-hot-folder" }]
  * ))
  */
 function descWithLinks(text, links = []) {

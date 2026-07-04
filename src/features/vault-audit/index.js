@@ -519,14 +519,14 @@ class MediaManagerSettingTab extends PluginSettingTab {
     });
     desc.createEl("a", {
       text: "View Media Manager Manual",
-      href: "https://stnd.build/guides/obsidian-plugin#7-media-manager",
+      href: "https://stnd.build/3-archives/obsidian-plugin#7-media-manager",
     });
 
     new Setting(containerEl)
       .setName("Smart rename attachments")
       .setDesc(descWithLinks(
         "Intercepts newly pasted or dropped media, generates a unique timestamp prefix, and moves them to the configured folder. § for the naming format.",
-        [{ text: "See Media Manager guide", href: "https://stnd.build/guides/obsidian-plugin#7-media-manager" }]
+        [{ text: "See Media Manager guide", href: "https://stnd.build/3-archives/obsidian-plugin#7-media-manager" }]
       ))
       .addToggle((toggle) =>
         toggle
@@ -541,7 +541,7 @@ class MediaManagerSettingTab extends PluginSettingTab {
       .setName("Storage folder")
       .setDesc(descWithLinks(
         "Vault folder where all managed media files are moved after rename. § for recommended folder structures.",
-        [{ text: "View setup guide", href: "https://stnd.build/guides/obsidian-plugin#7-media-manager" }]
+        [{ text: "View setup guide", href: "https://stnd.build/3-archives/obsidian-plugin#7-media-manager" }]
       ))
       .addText((text) => {
         text
@@ -628,7 +628,7 @@ class MediaManagerSettingTab extends PluginSettingTab {
       .setName("Timestamp format")
       .setDesc(descWithLinks(
         "Format used to prefix media filenames. § for a comparison of all available formats.",
-        [{ text: "See timestamp formats", href: "https://stnd.build/guides/obsidian-plugin#7-media-manager" }]
+        [{ text: "See timestamp formats", href: "https://stnd.build/3-archives/obsidian-plugin#7-media-manager" }]
       ))
       .addDropdown((dropdown) =>
         dropdown
@@ -646,7 +646,7 @@ class MediaManagerSettingTab extends PluginSettingTab {
       .setName("Timestamp exclusion regex")
       .setDesc(descWithLinks(
         "A regular expression used to detect if a file already carries a timestamp, preventing double-prefixing. § for regex syntax help.",
-        [{ text: "View exclusion docs", href: "https://stnd.build/guides/obsidian-plugin#7-media-manager" }]
+        [{ text: "View exclusion docs", href: "https://stnd.build/3-archives/obsidian-plugin#7-media-manager" }]
       ))
       .addText((text) =>
         text

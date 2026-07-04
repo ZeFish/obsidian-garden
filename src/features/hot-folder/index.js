@@ -133,7 +133,7 @@ class HotFolderSettingTab extends PluginSettingTab {
     });
     desc.createEl("a", {
       text: "View Hot Folder Manual",
-      href: "https://stnd.build/guides/obsidian-plugin#2-hot-folder",
+      href: "https://stnd.build/3-archives/obsidian-plugin#2-hot-folder",
     });
 
     const listContainer = containerEl.createEl("div", {
@@ -145,7 +145,7 @@ class HotFolderSettingTab extends PluginSettingTab {
       .setName("Add new rule")
       .setDesc(descWithLinks(
         "Create a new rule mapping a folder to a set of default frontmatter properties. § for rule examples.",
-        [{ text: "View Hot Folder guide", href: "https://stnd.build/guides/obsidian-plugin#2-hot-folder" }]
+        [{ text: "View Hot Folder guide", href: "https://stnd.build/3-archives/obsidian-plugin#2-hot-folder" }]
       ))
       .addButton((btn) =>
         btn
@@ -187,7 +187,7 @@ class HotFolderSettingTab extends PluginSettingTab {
         .setName(`Rule ${i + 1}: Target Folder`)
         .setDesc(descWithLinks(
           "The folder path in your vault. The rule applies to any note created or moved inside this folder structure. § for path syntax.",
-          [{ text: "Learn about folder patterns", href: "https://stnd.build/guides/obsidian-plugin#2-hot-folder" }]
+          [{ text: "Learn about folder patterns", href: "https://stnd.build/3-archives/obsidian-plugin#2-hot-folder" }]
         ));
       pathSetting.addText((text) => {
           text

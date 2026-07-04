@@ -21,7 +21,7 @@ class DesignSystemSettingTab extends PluginSettingTab {
     });
     desc.createEl("a", {
       text: "View Design System Manual",
-      href: "https://stnd.build/guides/obsidian-plugin#3-themes--design-system",
+      href: "https://stnd.build/3-archives/obsidian-plugin#3-themes--design-system",
     });
 
     const designSystemSetting = new Setting(containerEl)
@@ -31,7 +31,7 @@ class DesignSystemSettingTab extends PluginSettingTab {
       );
     designSystemSetting.descEl.createEl("a", {
       text: "Learn about Theme Note Snapping",
-      href: "https://stnd.build/guides/obsidian-plugin#3-themes--design-system",
+      href: "https://stnd.build/3-archives/obsidian-plugin#3-themes--design-system",
     });
     designSystemSetting.addToggle((toggle) =>
       toggle
@@ -48,7 +48,7 @@ class DesignSystemSettingTab extends PluginSettingTab {
       .setDesc("Purges the internal cache and forces the plugin to re-scan and hot-reload all theme stylesheets defined in your markdown files. Useful if you edited your custom theme notes but modifications aren't displaying yet. ")
     cacheSetting.descEl.createEl("a", {
       text: "View Cache troubleshooting",
-      href: "https://stnd.build/guides/obsidian-plugin#3-themes--design-system",
+      href: "https://stnd.build/3-archives/obsidian-plugin#3-themes--design-system",
     });
     cacheSetting.addButton((btn) =>
       btn.setButtonText("Clear Cache").onClick(async () => {
@@ -64,11 +64,11 @@ class DesignSystemSettingTab extends PluginSettingTab {
       .setName("CSS Hooks Reference")
       .setDesc(descWithLinks(
         "The plugin continuously reflects active workspace states (like .stnd-note, .stnd-reading, .stnd-published) onto the application body element, enabling you to target editor view states precisely inside your §.",
-        [{ text: "custom snippets", href: "https://stnd.build/guides/css-hooks" }]
+        [{ text: "custom snippets", href: "https://stnd.build/2-system/css-hooks" }]
       ));
     hooksSetting.addButton((btn) =>
       btn.setButtonText("View CSS Hooks").onClick(() => {
-        window.open("https://stnd.build/guides/css-hooks", "_blank");
+        window.open("https://stnd.build/2-system/css-hooks", "_blank");
       }),
     );
   }

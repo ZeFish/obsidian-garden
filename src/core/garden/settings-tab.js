@@ -25,7 +25,7 @@ class GardenSettingTab extends PluginSettingTab {
       .setName("Sync all published notes")
       .setDesc(descWithLinks(
         "Trigger a full § immediately. This will scan all notes with your publish key and reconcile them with standard.garden.",
-        [{ text: "manual synchronization", href: "https://stnd.build/guides/obsidian-plugin#manual-actions" }]
+        [{ text: "manual synchronization", href: "https://stnd.build/3-archives/obsidian-plugin#manual-actions" }]
       ));
     syncAllSetting.addButton((btn) =>
       btn
@@ -40,7 +40,7 @@ class GardenSettingTab extends PluginSettingTab {
       .setName("Download new online notes")
       .setDesc(descWithLinks(
         "Pull newly created online notes into your local vault. Non-destructive: it will § your existing local files.",
-        [{ text: "never modify or overwrite", href: "https://stnd.build/guides/obsidian-plugin#manual-actions" }]
+        [{ text: "never modify or overwrite", href: "https://stnd.build/3-archives/obsidian-plugin#manual-actions" }]
       ));
     downloadSetting.addButton((btn) =>
       btn
@@ -54,7 +54,7 @@ class GardenSettingTab extends PluginSettingTab {
       .setName("Sync on startup")
       .setDesc(descWithLinks(
         "Automatically initiate a quiet § 5 seconds after Obsidian loads to ensure your online garden is instantly up to date.",
-        [{ text: "background synchronization", href: "https://stnd.build/guides/obsidian-plugin#automated-background-tasks" }]
+        [{ text: "background synchronization", href: "https://stnd.build/3-archives/obsidian-plugin#automated-background-tasks" }]
       ));
     startupSetting.addToggle((toggle) =>
       toggle
@@ -69,7 +69,7 @@ class GardenSettingTab extends PluginSettingTab {
       .setName("Background sync interval")
       .setDesc(descWithLinks(
         "Automatically runs a quiet § in the background on the selected schedule (15m, 30m, 1h, 4h, 12h).",
-        [{ text: "sync task", href: "https://stnd.build/guides/obsidian-plugin#automated-background-tasks" }]
+        [{ text: "sync task", href: "https://stnd.build/3-archives/obsidian-plugin#automated-background-tasks" }]
       ));
     intervalSetting.addDropdown((dropdown) =>
       dropdown
@@ -91,7 +91,7 @@ class GardenSettingTab extends PluginSettingTab {
       .setName("Sync direction")
       .setDesc(descWithLinks(
         "§ pushes local edits to the Garden only. Two-way reconciles both sides and may overwrite local content.",
-        [{ text: "One-way (recommended)", href: "https://stnd.build/guides/obsidian-plugin#sync-direction-modes" }]
+        [{ text: "One-way (recommended)", href: "https://stnd.build/3-archives/obsidian-plugin#sync-direction-modes" }]
       ));
     syncDirSetting.addDropdown((dropdown) =>
       dropdown
@@ -111,7 +111,7 @@ class GardenSettingTab extends PluginSettingTab {
       .setName("Publish key")
       .setDesc(descWithLinks(
         "The § key that marks a note for sync (e.g., `publish: true` or `publish: public`).",
-        [{ text: "frontmatter YAML", href: "https://stnd.build/guides/obsidian-plugin#configuration" }]
+        [{ text: "frontmatter YAML", href: "https://stnd.build/3-archives/obsidian-plugin#configuration" }]
       ));
     publishKeySetting.addText((text) =>
       text
@@ -127,7 +127,7 @@ class GardenSettingTab extends PluginSettingTab {
       .setName("Open after publish")
       .setDesc(descWithLinks(
         "Automatically § the note's live URL immediately after a successful sync.",
-        [{ text: "launch your browser to", href: "https://stnd.build/guides/obsidian-plugin#configuration" }]
+        [{ text: "launch your browser to", href: "https://stnd.build/3-archives/obsidian-plugin#configuration" }]
       ));
     openSetting.addToggle((toggle) =>
       toggle
@@ -142,7 +142,7 @@ class GardenSettingTab extends PluginSettingTab {
       .setName("Publish status location")
       .setDesc(descWithLinks(
         "Where the § is displayed in the Obsidian workspace (title bar, status bar, ribbon, or hidden).",
-        [{ text: "publication status badge", href: "https://stnd.build/guides/obsidian-plugin#configuration" }]
+        [{ text: "publication status badge", href: "https://stnd.build/3-archives/obsidian-plugin#configuration" }]
       ));
     statusSetting.addDropdown((dropdown) =>
       dropdown

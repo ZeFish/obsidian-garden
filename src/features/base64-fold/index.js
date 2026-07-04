@@ -263,14 +263,14 @@ class Base64FoldSettingTab extends PluginSettingTab {
     });
     desc.createEl("a", {
       text: "View Base64 Fold Manual",
-      href: "https://stnd.build/guides/obsidian-plugin#10-base64-fold",
+      href: "https://stnd.build/3-archives/obsidian-plugin#10-base64-fold",
     });
 
     new Setting(containerEl)
       .setName("Enable Base64 Fold")
       .setDesc(descWithLinks(
         "Fold base64 strings longer than 100 characters into a compact badge. Click the badge to reveal. § for folding details.",
-        [{ text: "See Base64 Fold docs", href: "https://stnd.build/guides/obsidian-plugin#10-base64-fold" }]
+        [{ text: "See Base64 Fold docs", href: "https://stnd.build/3-archives/obsidian-plugin#10-base64-fold" }]
       ))
       .addToggle((t) =>
         t.setValue(this.settings.enabled !== false).onChange(async (v) => {
